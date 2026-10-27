@@ -206,12 +206,20 @@ class GCSStore(ArtifactStore):
     running on GKE/Cloud Run with workload identity (needs roles/iam.serviceAccountTokenCreator)."""
 
     name = "gcs"
+    # storage.Client() alone requests storage-only scopes; on Cloud Run/GKE the metadata token then lacks the
+    # scope the IAM signBlob call needs, so uploads succeed but signing fails with ACCESS_TOKEN_SCOPE_INSUFFICIENT.
+    SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
     def __init__(self, settings: Settings, client=None):
         from google.cloud import storage
 
         self.settings = settings
-        self.client = client or storage.Client()
+        if client is None:
+            import google.auth
+
+            creds, project = google.auth.default(scopes=list(self.SCOPES))
+            client = storage.Client(project=project, credentials=creds)
+        self.client = client
 
     def _signing_kwargs(self) -> dict[str, object]:
         creds = self.client._credentials  # noqa: SLF001 - the public client exposes no accessor

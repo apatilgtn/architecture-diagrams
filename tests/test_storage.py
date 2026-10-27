@@ -120,6 +120,25 @@ def test_gcs_upload_with_v4_signed_url(settings, files, monkeypatch):
     assert {ct for _, ct in uploaded} == {"image/png", "image/svg+xml"}
 
 
+def test_gcs_default_credentials_request_cloud_platform_scope(settings, monkeypatch):
+    # Regression: found on Cloud Run, where storage-only scopes made the signBlob call fail.
+    pytest.importorskip("google.cloud.storage")
+    import google.auth
+    from google.auth.credentials import AnonymousCredentials
+
+    requested = {}
+
+    def fake_default(scopes=None, **_):
+        requested["scopes"] = scopes
+        return AnonymousCredentials(), "proj"
+
+    monkeypatch.setattr(google.auth, "default", fake_default)
+    s = dataclasses.replace(settings, storage_backend="gcs", storage_bucket="diagrams-bucket")
+    store = storage.GCSStore(s)
+    assert requested["scopes"] == ["https://www.googleapis.com/auth/cloud-platform"]
+    assert store.client.project == "proj"
+
+
 def test_config_validation(monkeypatch):
     from arch_diagram_mcp.config import Settings
 
