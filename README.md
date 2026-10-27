@@ -31,6 +31,10 @@ The score is from `review_architecture`. Click a diagram for the full-size image
 
 To regenerate them, run `python scripts/render_samples.py`.
 
+The server has also been tested end to end on Google Cloud: a private bucket with signed URLs, and a
+private Cloud Run service with two layers of auth. See [docs/CLOUD_TESTING.md](docs/CLOUD_TESTING.md) for
+how it was tested, what was checked and the bug it found.
+
 ## Tools
 
 | Tool | What it does |
@@ -250,6 +254,8 @@ src/arch_diagram_mcp/
   config.py, logs.py, __main__.py
 tests/             70 tests: catalog, validation, rendering, label injection, review, Terraform, MCP tools,
                    HTTP auth, OIDC (incl. attack tokens), RBAC, signed links, S3 (moto), Azure SAS, GCS V4
+docs/CLOUD_TESTING.md   how the server was tested on real Google Cloud
 docs/samples/      rendered sample diagrams shown above
 scripts/render_samples.py   regenerates docs/samples/
+scripts/e2e_cloud.py, run_impersonated.py   real-cloud end-to-end test tools
 ```
