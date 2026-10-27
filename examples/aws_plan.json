@@ -1,0 +1,292 @@
+{
+  "planned_values": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_vpc.main",
+          "mode": "managed",
+          "type": "aws_vpc",
+          "name": "main",
+          "values": {
+            "cidr_block": "10.0.0.0/16",
+            "tags": {
+              "Name": "prod"
+            }
+          }
+        },
+        {
+          "address": "aws_subnet.public[0]",
+          "mode": "managed",
+          "type": "aws_subnet",
+          "name": "public",
+          "values": {
+            "cidr_block": "10.0.1.0/24"
+          }
+        },
+        {
+          "address": "aws_subnet.public[1]",
+          "mode": "managed",
+          "type": "aws_subnet",
+          "name": "public",
+          "values": {
+            "cidr_block": "10.0.2.0/24"
+          }
+        },
+        {
+          "address": "aws_subnet.private",
+          "mode": "managed",
+          "type": "aws_subnet",
+          "name": "private",
+          "values": {
+            "cidr_block": "10.0.10.0/24"
+          }
+        },
+        {
+          "address": "aws_lb.web",
+          "mode": "managed",
+          "type": "aws_lb",
+          "name": "web",
+          "values": {
+            "load_balancer_type": "application"
+          }
+        },
+        {
+          "address": "aws_lb_listener.https",
+          "mode": "managed",
+          "type": "aws_lb_listener",
+          "name": "https",
+          "values": {}
+        },
+        {
+          "address": "aws_lb_target_group.app",
+          "mode": "managed",
+          "type": "aws_lb_target_group",
+          "name": "app",
+          "values": {}
+        },
+        {
+          "address": "aws_lb_target_group_attachment.app[0]",
+          "mode": "managed",
+          "type": "aws_lb_target_group_attachment",
+          "name": "app",
+          "values": {}
+        },
+        {
+          "address": "aws_instance.app[0]",
+          "mode": "managed",
+          "type": "aws_instance",
+          "name": "app",
+          "values": {}
+        },
+        {
+          "address": "aws_instance.app[1]",
+          "mode": "managed",
+          "type": "aws_instance",
+          "name": "app",
+          "values": {}
+        },
+        {
+          "address": "aws_db_instance.db",
+          "mode": "managed",
+          "type": "aws_db_instance",
+          "name": "db",
+          "values": {}
+        },
+        {
+          "address": "aws_security_group.sg",
+          "mode": "managed",
+          "type": "aws_security_group",
+          "name": "sg",
+          "values": {}
+        }
+      ],
+      "child_modules": [
+        {
+          "resources": [
+            {
+              "address": "module.storage.aws_s3_bucket.assets",
+              "mode": "managed",
+              "type": "aws_s3_bucket",
+              "name": "assets",
+              "values": {
+                "bucket": "assets"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "configuration": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_vpc.main",
+          "mode": "managed",
+          "type": "aws_vpc",
+          "name": "main",
+          "expressions": {
+            "x": {
+              "references": []
+            }
+          }
+        },
+        {
+          "address": "aws_subnet.public",
+          "mode": "managed",
+          "type": "aws_subnet",
+          "name": "public",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_vpc.main.id",
+                "aws_vpc.main"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_subnet.private",
+          "mode": "managed",
+          "type": "aws_subnet",
+          "name": "private",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_vpc.main.id"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_lb.web",
+          "mode": "managed",
+          "type": "aws_lb",
+          "name": "web",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_subnet.public",
+                "aws_security_group.sg.id"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_lb_listener.https",
+          "mode": "managed",
+          "type": "aws_lb_listener",
+          "name": "https",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_lb.web.arn",
+                "aws_lb_target_group.app.arn"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_lb_target_group.app",
+          "mode": "managed",
+          "type": "aws_lb_target_group",
+          "name": "app",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_vpc.main.id"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_lb_target_group_attachment.app",
+          "mode": "managed",
+          "type": "aws_lb_target_group_attachment",
+          "name": "app",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_lb_target_group.app.arn",
+                "aws_instance.app[0].id",
+                "aws_instance.app"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_instance.app",
+          "mode": "managed",
+          "type": "aws_instance",
+          "name": "app",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_subnet.private.id",
+                "aws_security_group.sg.id",
+                "module.storage.bucket_arn",
+                "aws_db_instance.db.address"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_db_instance.db",
+          "mode": "managed",
+          "type": "aws_db_instance",
+          "name": "db",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_subnet.private.id",
+                "var.password"
+              ]
+            }
+          }
+        },
+        {
+          "address": "aws_security_group.sg",
+          "mode": "managed",
+          "type": "aws_security_group",
+          "name": "sg",
+          "expressions": {
+            "x": {
+              "references": [
+                "aws_vpc.main.id"
+              ]
+            }
+          }
+        }
+      ],
+      "module_calls": {
+        "storage": {
+          "module": {
+            "resources": [
+              {
+                "address": "aws_s3_bucket.assets",
+                "mode": "managed",
+                "type": "aws_s3_bucket",
+                "name": "assets",
+                "expressions": {
+                  "x": {
+                    "references": []
+                  }
+                }
+              }
+            ],
+            "outputs": {
+              "bucket_arn": {
+                "expression": {
+                  "references": [
+                    "aws_s3_bucket.assets.arn",
+                    "aws_s3_bucket.assets"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

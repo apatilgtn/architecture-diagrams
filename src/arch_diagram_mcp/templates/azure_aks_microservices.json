@@ -1,0 +1,197 @@
+{
+  "id": "azure_aks_microservices",
+  "provider": "azure",
+  "description": "Microservices on AKS behind Front Door, API Management and App Gateway, with Azure SQL, Cosmos DB, Redis, Service Bus and Functions.",
+  "spec": {
+    "title": "Azure Microservices on AKS",
+    "filename": "azure_aks_microservices",
+    "clusters": [
+      {
+        "id": "sub",
+        "label": "Azure Subscription: prod",
+        "style": "rounded"
+      },
+      {
+        "id": "rg",
+        "label": "Resource Group: rg-prod-eastus",
+        "parent": "sub",
+        "style": "dashed"
+      },
+      {
+        "id": "vnet",
+        "label": "VNet 10.1.0.0/16",
+        "parent": "rg",
+        "bgcolor": "#EAF3FB"
+      },
+      {
+        "id": "aks",
+        "label": "AKS Cluster",
+        "parent": "vnet",
+        "bgcolor": "#E3EEF9"
+      },
+      {
+        "id": "data",
+        "label": "Data Services (Private Endpoints)",
+        "parent": "rg",
+        "bgcolor": "#F3EEF8"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "users",
+        "type": "onprem.client.Users",
+        "label": "Users"
+      },
+      {
+        "id": "entra",
+        "type": "azure.identity.ActiveDirectory",
+        "label": "Microsoft Entra ID",
+        "cluster": "sub"
+      },
+      {
+        "id": "fd",
+        "type": "azure.network.FrontDoors",
+        "label": "Front Door + WAF",
+        "cluster": "sub"
+      },
+      {
+        "id": "apim",
+        "type": "azure.integration.APIManagement",
+        "label": "API Management",
+        "cluster": "rg"
+      },
+      {
+        "id": "agw",
+        "type": "azure.network.ApplicationGateway",
+        "label": "App Gateway (AGIC)",
+        "cluster": "vnet"
+      },
+      {
+        "id": "orders",
+        "type": "azure.compute.AKS",
+        "label": "orders-svc",
+        "cluster": "aks"
+      },
+      {
+        "id": "catalog",
+        "type": "azure.compute.AKS",
+        "label": "catalog-svc",
+        "cluster": "aks"
+      },
+      {
+        "id": "func",
+        "type": "azure.compute.FunctionApps",
+        "label": "Function App\n(event processor)",
+        "cluster": "rg"
+      },
+      {
+        "id": "bus",
+        "type": "azure.integration.ServiceBus",
+        "label": "Service Bus",
+        "cluster": "rg"
+      },
+      {
+        "id": "sql",
+        "type": "azure.database.SQLDatabases",
+        "label": "Azure SQL",
+        "cluster": "data"
+      },
+      {
+        "id": "cosmos",
+        "type": "azure.database.CosmosDb",
+        "label": "Cosmos DB",
+        "cluster": "data"
+      },
+      {
+        "id": "redis",
+        "type": "azure.database.CacheForRedis",
+        "label": "Azure Cache for Redis",
+        "cluster": "data"
+      },
+      {
+        "id": "blob",
+        "type": "azure.storage.BlobStorage",
+        "label": "Blob Storage",
+        "cluster": "data"
+      },
+      {
+        "id": "kv",
+        "type": "azure.security.KeyVaults",
+        "label": "Key Vault",
+        "cluster": "rg"
+      },
+      {
+        "id": "ai",
+        "type": "azure.devops.ApplicationInsights",
+        "label": "App Insights",
+        "cluster": "rg"
+      }
+    ],
+    "edges": [
+      {
+        "source": "users",
+        "target": "fd",
+        "label": "HTTPS"
+      },
+      {
+        "source": "users",
+        "target": "entra",
+        "style": "dashed",
+        "label": "sign-in"
+      },
+      {
+        "source": "fd",
+        "target": "apim"
+      },
+      {
+        "source": "apim",
+        "target": "agw"
+      },
+      {
+        "source": "agw",
+        "target": "orders"
+      },
+      {
+        "source": "agw",
+        "target": "catalog"
+      },
+      {
+        "source": "orders",
+        "target": "sql"
+      },
+      {
+        "source": "orders",
+        "target": "bus",
+        "label": "OrderPlaced"
+      },
+      {
+        "source": "catalog",
+        "target": "cosmos"
+      },
+      {
+        "source": "catalog",
+        "target": "redis"
+      },
+      {
+        "source": "bus",
+        "target": "func"
+      },
+      {
+        "source": "func",
+        "target": "blob"
+      },
+      {
+        "source": "orders",
+        "target": "kv",
+        "style": "dotted",
+        "label": "secrets"
+      },
+      {
+        "source": "catalog",
+        "target": "ai",
+        "style": "dotted",
+        "color": "gray"
+      }
+    ]
+  }
+}

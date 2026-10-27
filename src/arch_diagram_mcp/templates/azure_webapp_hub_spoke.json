@@ -1,0 +1,416 @@
+{
+  "id": "azure_webapp_hub_spoke",
+  "provider": "azure",
+  "description": "Production web app: hub-spoke networking, Front Door Premium + WAF, Container Apps, private endpoints, Entra ID, Sentinel, warm DR region.",
+  "spec": {
+    "title": "Azure Web Application - Production (Hub-Spoke, Zone-Redundant, Warm DR)",
+    "filename": "azure_webapp_hub_spoke",
+    "direction": "LR",
+    "curve_style": "spline",
+    "clusters": [
+      {
+        "id": "tenant",
+        "label": "Microsoft Entra Tenant",
+        "style": "rounded"
+      },
+      {
+        "id": "cicd",
+        "label": "CI/CD",
+        "style": "dashed"
+      },
+      {
+        "id": "primary",
+        "label": "Primary Region: East US 2 (3 Availability Zones)",
+        "style": "rounded"
+      },
+      {
+        "id": "hub",
+        "label": "Hub VNet 10.0.0.0/16 (Connectivity Subscription)",
+        "parent": "primary",
+        "bgcolor": "#FDF1E6"
+      },
+      {
+        "id": "spoke",
+        "label": "Spoke VNet 10.1.0.0/16 (app-prod Subscription)",
+        "parent": "primary",
+        "bgcolor": "#EAF3FB"
+      },
+      {
+        "id": "snet_apim",
+        "label": "snet-apim 10.1.1.0/24",
+        "parent": "spoke",
+        "bgcolor": "#DDEBF8"
+      },
+      {
+        "id": "snet_app",
+        "label": "snet-aca 10.1.2.0/23 (Container Apps Env, internal)",
+        "parent": "spoke",
+        "bgcolor": "#DDEBF8"
+      },
+      {
+        "id": "snet_pe",
+        "label": "snet-pe 10.1.4.0/24 (Private Endpoints)",
+        "parent": "spoke",
+        "bgcolor": "#EDE6F6"
+      },
+      {
+        "id": "ops",
+        "label": "Management Subscription (Observability & Security)",
+        "parent": "primary",
+        "bgcolor": "#EEF6EA"
+      },
+      {
+        "id": "dr",
+        "label": "DR Region: Central US (warm standby)",
+        "style": "dashed",
+        "bgcolor": "#F5F5F5"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "users",
+        "type": "onprem.client.Users",
+        "label": "Customers"
+      },
+      {
+        "id": "admins",
+        "type": "onprem.client.Users",
+        "label": "Ops Engineers"
+      },
+      {
+        "id": "onprem",
+        "type": "generic.place.Datacenter",
+        "label": "On-prem DC"
+      },
+      {
+        "id": "extid",
+        "type": "azure.identity.ADB2C",
+        "label": "Entra External ID\n(customer auth)",
+        "cluster": "tenant"
+      },
+      {
+        "id": "entra",
+        "type": "azure.identity.ActiveDirectory",
+        "label": "Entra ID\n(workforce, PIM, CA)",
+        "cluster": "tenant"
+      },
+      {
+        "id": "gha",
+        "type": "onprem.ci.GithubActions",
+        "label": "GitHub Actions\n(OIDC, Bicep/Terraform)",
+        "cluster": "cicd"
+      },
+      {
+        "id": "dns",
+        "type": "azure.network.DNSZones",
+        "label": "Azure DNS"
+      },
+      {
+        "id": "afd",
+        "type": "azure.network.FrontDoors",
+        "label": "Front Door Premium\n+ WAF (OWASP, bot, rate)"
+      },
+      {
+        "id": "ddos",
+        "type": "azure.network.DDOSProtectionPlans",
+        "label": "DDoS Network\nProtection",
+        "cluster": "hub"
+      },
+      {
+        "id": "fw",
+        "type": "azure.network.Firewall",
+        "label": "Azure Firewall Premium\n(egress, TLS inspect)",
+        "cluster": "hub"
+      },
+      {
+        "id": "vpngw",
+        "type": "azure.network.VirtualNetworkGateways",
+        "label": "VPN / ExpressRoute\nGateway (ZR)",
+        "cluster": "hub"
+      },
+      {
+        "id": "bastion",
+        "type": "azure.networking.Bastions",
+        "label": "Azure Bastion",
+        "cluster": "hub"
+      },
+      {
+        "id": "pdns",
+        "type": "azure.network.DNSPrivateZones",
+        "label": "Private DNS Zones\n(privatelink.*)",
+        "cluster": "hub"
+      },
+      {
+        "id": "rt",
+        "type": "azure.network.RouteTables",
+        "label": "UDR 0.0.0.0/0\n-> Firewall",
+        "cluster": "spoke"
+      },
+      {
+        "id": "apim",
+        "type": "azure.integration.APIManagement",
+        "label": "API Management\nPremium v2",
+        "cluster": "snet_apim"
+      },
+      {
+        "id": "web",
+        "type": "azure.compute.ContainerApps",
+        "label": "web-frontend\n(Next.js, min 3)",
+        "cluster": "snet_app"
+      },
+      {
+        "id": "api",
+        "type": "azure.compute.ContainerApps",
+        "label": "orders-api\n(.NET 9, min 3)",
+        "cluster": "snet_app"
+      },
+      {
+        "id": "worker",
+        "type": "azure.compute.ContainerApps",
+        "label": "fulfilment-worker\n(KEDA on queue depth)",
+        "cluster": "snet_app"
+      },
+      {
+        "id": "mi",
+        "type": "azure.identity.ManagedIdentities",
+        "label": "User-assigned MI\n(all apps)",
+        "cluster": "snet_app"
+      },
+      {
+        "id": "sql",
+        "type": "azure.database.SQLDatabases",
+        "label": "Azure SQL DB\n(Business Critical, ZR)",
+        "cluster": "snet_pe"
+      },
+      {
+        "id": "redis",
+        "type": "azure.database.CacheForRedis",
+        "label": "Azure Managed Redis\n(ZR)",
+        "cluster": "snet_pe"
+      },
+      {
+        "id": "sb",
+        "type": "azure.integration.ServiceBus",
+        "label": "Service Bus Premium\n(DLQ, sessions)",
+        "cluster": "snet_pe"
+      },
+      {
+        "id": "blob",
+        "type": "azure.storage.StorageAccounts",
+        "label": "Storage (GZRS)\ninvoices, soft-delete",
+        "cluster": "snet_pe"
+      },
+      {
+        "id": "kv",
+        "type": "azure.security.KeyVaults",
+        "label": "Key Vault\n(RBAC, purge protect)",
+        "cluster": "snet_pe"
+      },
+      {
+        "id": "acr",
+        "type": "azure.compute.ContainerRegistries",
+        "label": "Container Registry\nPremium (geo-repl)",
+        "cluster": "snet_pe"
+      },
+      {
+        "id": "appi",
+        "type": "azure.devops.ApplicationInsights",
+        "label": "Application Insights",
+        "cluster": "ops"
+      },
+      {
+        "id": "law",
+        "type": "azure.monitor.LogAnalyticsWorkspaces",
+        "label": "Log Analytics",
+        "cluster": "ops"
+      },
+      {
+        "id": "defender",
+        "type": "azure.security.Defender",
+        "label": "Defender for Cloud",
+        "cluster": "ops"
+      },
+      {
+        "id": "sentinel",
+        "type": "azure.security.Sentinel",
+        "label": "Microsoft Sentinel",
+        "cluster": "ops"
+      },
+      {
+        "id": "dr_apps",
+        "type": "azure.compute.ContainerApps",
+        "label": "Container Apps\n(scaled to 1)",
+        "cluster": "dr"
+      },
+      {
+        "id": "dr_sql",
+        "type": "azure.database.SQLDatabases",
+        "label": "SQL geo-secondary",
+        "cluster": "dr"
+      }
+    ],
+    "edges": [
+      {
+        "source": "users",
+        "target": "dns",
+        "label": "app.contoso.com"
+      },
+      {
+        "source": "users",
+        "target": "extid",
+        "style": "dashed",
+        "label": "OIDC / PKCE"
+      },
+      {
+        "source": "dns",
+        "target": "afd"
+      },
+      {
+        "source": "afd",
+        "target": "web",
+        "label": "Private Link origin",
+        "color": "#0078D4"
+      },
+      {
+        "source": "afd",
+        "target": "apim",
+        "label": "Private Link origin (/api)",
+        "color": "#0078D4"
+      },
+      {
+        "source": "afd",
+        "target": "dr_apps",
+        "label": "failover origin",
+        "style": "dashed",
+        "color": "#0078D4"
+      },
+      {
+        "source": "web",
+        "target": "apim",
+        "label": "server-side calls"
+      },
+      {
+        "source": "apim",
+        "target": "api",
+        "label": "validate-jwt, rate-limit"
+      },
+      {
+        "source": "api",
+        "target": "sql"
+      },
+      {
+        "source": "api",
+        "target": "redis",
+        "label": "cache-aside"
+      },
+      {
+        "source": "api",
+        "target": "sb",
+        "label": "OrderPlaced"
+      },
+      {
+        "source": "sb",
+        "target": "worker"
+      },
+      {
+        "source": "worker",
+        "target": "sql"
+      },
+      {
+        "source": "worker",
+        "target": "blob"
+      },
+      {
+        "source": "sql",
+        "target": "dr_sql",
+        "label": "auto-failover group",
+        "style": "dashed"
+      },
+      {
+        "source": "mi",
+        "target": "kv",
+        "style": "dotted",
+        "label": "secrets / certs"
+      },
+      {
+        "source": "mi",
+        "target": "sql",
+        "style": "dotted",
+        "label": "Entra auth"
+      },
+      {
+        "source": "mi",
+        "target": "acr",
+        "style": "dotted",
+        "label": "AcrPull"
+      },
+      {
+        "source": "rt",
+        "target": "fw",
+        "label": "VNet peering\n(spoke -> hub egress)",
+        "color": "#D83B01",
+        "bidirectional": true
+      },
+      {
+        "source": "pdns",
+        "target": "rt",
+        "style": "dotted",
+        "color": "gray",
+        "label": "VNet link"
+      },
+      {
+        "source": "ddos",
+        "target": "fw",
+        "style": "dotted",
+        "color": "gray"
+      },
+      {
+        "source": "onprem",
+        "target": "vpngw",
+        "label": "S2S / ExpressRoute",
+        "bidirectional": true
+      },
+      {
+        "source": "admins",
+        "target": "entra",
+        "style": "dashed",
+        "label": "PIM elevation"
+      },
+      {
+        "source": "admins",
+        "target": "bastion",
+        "label": "JIT admin"
+      },
+      {
+        "source": "gha",
+        "target": "acr",
+        "label": "push signed image"
+      },
+      {
+        "source": "api",
+        "target": "appi",
+        "style": "dotted",
+        "color": "gray",
+        "label": "OpenTelemetry"
+      },
+      {
+        "source": "appi",
+        "target": "law",
+        "style": "dotted",
+        "color": "gray"
+      },
+      {
+        "source": "defender",
+        "target": "law",
+        "style": "dotted",
+        "color": "gray"
+      },
+      {
+        "source": "law",
+        "target": "sentinel",
+        "style": "dotted",
+        "color": "gray"
+      }
+    ]
+  }
+}

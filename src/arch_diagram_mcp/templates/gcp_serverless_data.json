@@ -1,0 +1,197 @@
+{
+  "id": "gcp_serverless_data",
+  "provider": "gcp",
+  "description": "Serverless API on Cloud Run with a GKE service, Cloud SQL, Memorystore, Firestore, and a Pub/Sub -> Functions -> BigQuery pipeline.",
+  "spec": {
+    "title": "GCP Serverless & Data Platform",
+    "filename": "gcp_serverless_data",
+    "clusters": [
+      {
+        "id": "gcp",
+        "label": "Google Cloud",
+        "style": "rounded"
+      },
+      {
+        "id": "proj",
+        "label": "Project: shop-prod",
+        "parent": "gcp",
+        "style": "dashed"
+      },
+      {
+        "id": "region",
+        "label": "Region: us-central1",
+        "parent": "proj",
+        "bgcolor": "#EDF3FE"
+      },
+      {
+        "id": "gke",
+        "label": "GKE Autopilot",
+        "parent": "region",
+        "bgcolor": "#E4EDFD"
+      },
+      {
+        "id": "analytics",
+        "label": "Analytics",
+        "parent": "proj",
+        "bgcolor": "#FEF6E4"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "users",
+        "type": "onprem.client.Users",
+        "label": "Users"
+      },
+      {
+        "id": "dns",
+        "type": "gcp.network.DNS",
+        "label": "Cloud DNS",
+        "cluster": "gcp"
+      },
+      {
+        "id": "armor",
+        "type": "gcp.network.Armor",
+        "label": "Cloud Armor",
+        "cluster": "gcp"
+      },
+      {
+        "id": "lb",
+        "type": "gcp.network.LoadBalancing",
+        "label": "Global HTTPS LB",
+        "cluster": "gcp"
+      },
+      {
+        "id": "cdn",
+        "type": "gcp.network.CDN",
+        "label": "Cloud CDN",
+        "cluster": "gcp"
+      },
+      {
+        "id": "run",
+        "type": "gcp.compute.Run",
+        "label": "Cloud Run\n(API)",
+        "cluster": "region"
+      },
+      {
+        "id": "gkesvc",
+        "type": "gcp.compute.GKE",
+        "label": "recommendation-svc",
+        "cluster": "gke"
+      },
+      {
+        "id": "fn",
+        "type": "gcp.compute.Functions",
+        "label": "Cloud Functions",
+        "cluster": "region"
+      },
+      {
+        "id": "sql",
+        "type": "gcp.database.SQL",
+        "label": "Cloud SQL (Postgres)",
+        "cluster": "region"
+      },
+      {
+        "id": "mem",
+        "type": "gcp.database.Memorystore",
+        "label": "Memorystore Redis",
+        "cluster": "region"
+      },
+      {
+        "id": "fs",
+        "type": "gcp.database.Firestore",
+        "label": "Firestore",
+        "cluster": "region"
+      },
+      {
+        "id": "gcs",
+        "type": "gcp.storage.GCS",
+        "label": "Cloud Storage",
+        "cluster": "region"
+      },
+      {
+        "id": "pubsub",
+        "type": "gcp.analytics.Pubsub",
+        "label": "Pub/Sub",
+        "cluster": "analytics"
+      },
+      {
+        "id": "bq",
+        "type": "gcp.analytics.Bigquery",
+        "label": "BigQuery",
+        "cluster": "analytics"
+      },
+      {
+        "id": "mon",
+        "type": "gcp.operations.Monitoring",
+        "label": "Cloud Monitoring",
+        "cluster": "proj"
+      }
+    ],
+    "edges": [
+      {
+        "source": "users",
+        "target": "dns",
+        "label": "HTTPS"
+      },
+      {
+        "source": "dns",
+        "target": "armor"
+      },
+      {
+        "source": "armor",
+        "target": "lb"
+      },
+      {
+        "source": "lb",
+        "target": "cdn",
+        "label": "static"
+      },
+      {
+        "source": "cdn",
+        "target": "gcs"
+      },
+      {
+        "source": "lb",
+        "target": "run",
+        "label": "/api"
+      },
+      {
+        "source": "run",
+        "target": "sql"
+      },
+      {
+        "source": "run",
+        "target": "mem"
+      },
+      {
+        "source": "run",
+        "target": "gkesvc",
+        "label": "gRPC"
+      },
+      {
+        "source": "gkesvc",
+        "target": "fs"
+      },
+      {
+        "source": "run",
+        "target": "pubsub",
+        "label": "events"
+      },
+      {
+        "source": "pubsub",
+        "target": "fn"
+      },
+      {
+        "source": "fn",
+        "target": "bq",
+        "label": "stream insert"
+      },
+      {
+        "source": "run",
+        "target": "mon",
+        "style": "dotted",
+        "color": "gray"
+      }
+    ]
+  }
+}

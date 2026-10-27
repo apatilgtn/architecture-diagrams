@@ -1,0 +1,194 @@
+{
+  "id": "aws_three_tier",
+  "provider": "aws",
+  "description": "Classic 3-tier web app: Route 53, WAF, CloudFront, ALB, ECS Fargate API/worker, RDS Multi-AZ, ElastiCache, SQS, Cognito.",
+  "spec": {
+    "title": "AWS 3-Tier Web Application",
+    "filename": "aws_three_tier",
+    "clusters": [
+      {
+        "id": "cloud",
+        "label": "AWS Cloud",
+        "style": "rounded"
+      },
+      {
+        "id": "region",
+        "label": "Region: us-east-1",
+        "parent": "cloud",
+        "style": "dashed"
+      },
+      {
+        "id": "vpc",
+        "label": "VPC 10.0.0.0/16",
+        "parent": "region",
+        "bgcolor": "#F2F8EC"
+      },
+      {
+        "id": "pub",
+        "label": "Public Subnets",
+        "parent": "vpc",
+        "bgcolor": "#E9F3E6"
+      },
+      {
+        "id": "app",
+        "label": "Private Subnets - App (ECS Fargate)",
+        "parent": "vpc",
+        "bgcolor": "#E6F2F8"
+      },
+      {
+        "id": "data",
+        "label": "Private Subnets - Data",
+        "parent": "vpc",
+        "bgcolor": "#EFEAF7"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "users",
+        "type": "onprem.client.Users",
+        "label": "Users"
+      },
+      {
+        "id": "dns",
+        "type": "aws.network.Route53",
+        "label": "Route 53",
+        "cluster": "cloud"
+      },
+      {
+        "id": "waf",
+        "type": "aws.security.WAF",
+        "label": "AWS WAF",
+        "cluster": "cloud"
+      },
+      {
+        "id": "cdn",
+        "type": "aws.network.CloudFront",
+        "label": "CloudFront",
+        "cluster": "cloud"
+      },
+      {
+        "id": "static",
+        "type": "aws.storage.S3",
+        "label": "S3 Static Assets",
+        "cluster": "region"
+      },
+      {
+        "id": "auth",
+        "type": "aws.security.Cognito",
+        "label": "Cognito",
+        "cluster": "region"
+      },
+      {
+        "id": "alb",
+        "type": "aws.network.ALB",
+        "label": "Application LB",
+        "cluster": "pub"
+      },
+      {
+        "id": "nat",
+        "type": "aws.network.NATGateway",
+        "label": "NAT Gateway",
+        "cluster": "pub"
+      },
+      {
+        "id": "api",
+        "type": "aws.compute.Fargate",
+        "label": "API Service",
+        "cluster": "app"
+      },
+      {
+        "id": "worker",
+        "type": "aws.compute.Fargate",
+        "label": "Worker Service",
+        "cluster": "app"
+      },
+      {
+        "id": "queue",
+        "type": "aws.integration.SQS",
+        "label": "SQS Queue",
+        "cluster": "region"
+      },
+      {
+        "id": "rds",
+        "type": "aws.database.RDS",
+        "label": "RDS PostgreSQL\n(Multi-AZ)",
+        "cluster": "data"
+      },
+      {
+        "id": "cache",
+        "type": "aws.database.ElastiCache",
+        "label": "ElastiCache Redis",
+        "cluster": "data"
+      },
+      {
+        "id": "logs",
+        "type": "aws.management.Cloudwatch",
+        "label": "CloudWatch",
+        "cluster": "region"
+      }
+    ],
+    "edges": [
+      {
+        "source": "users",
+        "target": "dns",
+        "label": "HTTPS"
+      },
+      {
+        "source": "dns",
+        "target": "waf"
+      },
+      {
+        "source": "waf",
+        "target": "cdn"
+      },
+      {
+        "source": "cdn",
+        "target": "static",
+        "label": "static"
+      },
+      {
+        "source": "cdn",
+        "target": "alb",
+        "label": "/api"
+      },
+      {
+        "source": "alb",
+        "target": "api"
+      },
+      {
+        "source": "api",
+        "target": "auth",
+        "style": "dashed",
+        "label": "JWT"
+      },
+      {
+        "source": "api",
+        "target": "rds",
+        "label": "SQL"
+      },
+      {
+        "source": "api",
+        "target": "cache"
+      },
+      {
+        "source": "api",
+        "target": "queue",
+        "label": "jobs"
+      },
+      {
+        "source": "queue",
+        "target": "worker"
+      },
+      {
+        "source": "worker",
+        "target": "rds"
+      },
+      {
+        "source": "api",
+        "target": "logs",
+        "style": "dotted",
+        "color": "gray"
+      }
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "aws_serverless_event_driven",
+  "provider": "aws",
+  "description": "Serverless, event-driven API: CloudFront + WAF, API Gateway, Lambda, DynamoDB, EventBridge fan-out to SQS/Step Functions, S3, Cognito, observability and CI/CD.",
+  "spec": {
+    "title": "AWS Serverless Event-Driven Application",
+    "filename": "aws_serverless_event_driven",
+    "direction": "LR",
+    "clusters": [
+      {"id": "cloud", "label": "AWS Cloud - Account: prod", "style": "rounded"},
+      {"id": "region", "label": "Region: eu-west-1", "parent": "cloud", "style": "dashed"},
+      {"id": "api", "label": "API Layer", "parent": "region", "bgcolor": "#E6F2F8"},
+      {"id": "events", "label": "Event Processing", "parent": "region", "bgcolor": "#FDF7E3"},
+      {"id": "data", "label": "Data", "parent": "region", "bgcolor": "#EFEAF7"},
+      {"id": "ops", "label": "Security & Observability", "parent": "region", "bgcolor": "#EBF3E7"},
+      {"id": "cicd", "label": "CI/CD", "style": "dashed"}
+    ],
+    "nodes": [
+      {"id": "users", "type": "onprem.client.Users", "label": "Users"},
+      {"id": "r53", "type": "aws.network.Route53", "label": "Route 53", "cluster": "cloud"},
+      {"id": "cf", "type": "aws.network.CloudFront", "label": "CloudFront", "cluster": "cloud"},
+      {"id": "waf", "type": "aws.security.WAF", "label": "AWS WAF", "cluster": "cloud"},
+      {"id": "web", "type": "aws.storage.S3", "label": "S3 SPA hosting\n(OAC)", "cluster": "region"},
+      {"id": "cognito", "type": "aws.security.Cognito", "label": "Cognito User Pool", "cluster": "api"},
+      {"id": "apigw", "type": "aws.network.APIGateway", "label": "API Gateway (HTTP)", "cluster": "api"},
+      {"id": "fn_api", "type": "aws.compute.Lambda", "label": "orders-api λ", "cluster": "api"},
+      {"id": "bus", "type": "aws.integration.Eventbridge", "label": "EventBridge bus", "cluster": "events"},
+      {"id": "q", "type": "aws.integration.SQS", "label": "SQS + DLQ", "cluster": "events"},
+      {"id": "fn_worker", "type": "aws.compute.Lambda", "label": "fulfilment λ", "cluster": "events"},
+      {"id": "sfn", "type": "aws.integration.StepFunctions", "label": "Step Functions\n(payment saga)", "cluster": "events"},
+      {"id": "sns", "type": "aws.integration.SNS", "label": "SNS notifications", "cluster": "events"},
+      {"id": "ddb", "type": "aws.database.Dynamodb", "label": "DynamoDB\n(PITR, global table)", "cluster": "data"},
+      {"id": "s3docs", "type": "aws.storage.S3", "label": "S3 documents\n(versioned)", "cluster": "data"},
+      {"id": "secrets", "type": "aws.security.SecretsManager", "label": "Secrets Manager", "cluster": "ops"},
+      {"id": "kms", "type": "aws.security.KMS", "label": "KMS CMK", "cluster": "ops"},
+      {"id": "cw", "type": "aws.management.Cloudwatch", "label": "CloudWatch + X-Ray", "cluster": "ops"},
+      {"id": "backup", "type": "aws.storage.Backup", "label": "AWS Backup", "cluster": "ops"},
+      {"id": "pipeline", "type": "aws.devtools.Codepipeline", "label": "CodePipeline\n(SAM / CDK)", "cluster": "cicd"}
+    ],
+    "edges": [
+      {"source": "users", "target": "r53", "label": "HTTPS"},
+      {"source": "r53", "target": "cf"},
+      {"source": "waf", "target": "cf", "style": "dotted", "label": "web ACL"},
+      {"source": "cf", "target": "web", "label": "/*"},
+      {"source": "cf", "target": "apigw", "label": "/api/*"},
+      {"source": "apigw", "target": "cognito", "style": "dashed", "label": "JWT authorizer"},
+      {"source": "apigw", "target": "fn_api"},
+      {"source": "fn_api", "target": "ddb"},
+      {"source": "fn_api", "target": "bus", "label": "OrderPlaced"},
+      {"source": "bus", "target": "q"},
+      {"source": "bus", "target": "sfn"},
+      {"source": "q", "target": "fn_worker"},
+      {"source": "fn_worker", "target": "s3docs"},
+      {"source": "fn_worker", "target": "ddb"},
+      {"source": "sfn", "target": "sns"},
+      {"source": "fn_api", "target": "secrets", "style": "dotted"},
+      {"source": "secrets", "target": "kms", "style": "dotted"},
+      {"source": "fn_api", "target": "cw", "style": "dotted", "color": "gray"},
+      {"source": "backup", "target": "ddb", "style": "dotted", "color": "gray"},
+      {"source": "pipeline", "target": "fn_api", "label": "deploy"}
+    ]
+  }
+}
