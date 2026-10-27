@@ -40,15 +40,18 @@ If your team already runs a shared server, use **B**.
    sudo apt install graphviz             # Debian / Ubuntu
    ```
 
-2. Install the server from GitHub. `pipx` keeps it in its own environment and puts the
+2. Install the server from PyPI. `pipx` keeps it in its own environment and puts the
    `arch-diagram-mcp` command on your PATH:
 
    ```bash
-   pipx install git+https://github.com/apatilgtn/architecture-diagrams.git
+   pipx install arch-diagram-mcp
    ```
 
-   Plain `pip install git+https://github.com/apatilgtn/architecture-diagrams.git` into a virtual
-   environment works too. To upgrade later, run `pipx upgrade arch-diagram-mcp`.
+   To upgrade later, run `pipx upgrade arch-diagram-mcp`. Alternatives:
+   - With [uv](https://docs.astral.sh/uv/) there is nothing to install: use `uvx arch-diagram-mcp` as
+     the command in the client settings below.
+   - With Node.js, use `npx -y arch-diagram-mcp`. It launches the same PyPI package through uv or pipx.
+   - For the latest unreleased code: `pipx install git+https://github.com/apatilgtn/architecture-diagrams.git`.
 
 3. Pick a folder for the diagrams, for example `~/architecture-diagrams`. That's the default if you
    don't set `ARCH_DIAGRAM_OUTPUT_DIR`.

@@ -8,7 +8,22 @@ through Graphviz to PNG, self-contained SVG, PDF or JPG.
 You can design new architectures, or diagram what already exists: from Terraform, or straight from a
 running Google Cloud project's own inventory, with the real resource names, however it was created.
 
-**Using it as a developer?** Start with the [developer guide](docs/USER_GUIDE.md). It covers connecting
+<!-- mcp-name: io.github.apatilgtn/architecture-diagrams -->
+
+**Quick start.** Install [Graphviz](https://graphviz.org/download/), then add the server to your MCP
+client with any of these:
+
+| From | Command |
+|---|---|
+| PyPI, with [uv](https://docs.astral.sh/uv/) | `uvx arch-diagram-mcp` |
+| PyPI, with pipx | `pipx install arch-diagram-mcp`, then run `arch-diagram-mcp` |
+| npm (launches the PyPI package through uv or pipx) | `npx -y arch-diagram-mcp` |
+
+For example, in Claude Code: `claude mcp add architecture-diagrams -s user -- uvx arch-diagram-mcp`.
+It is also listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as
+`io.github.apatilgtn/architecture-diagrams`.
+
+**Using it as a developer?** Start with the [developer guide](https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/USER_GUIDE.md). It covers connecting
 Claude Code, VS Code, Cursor or Claude Desktop, on your machine or to a shared team server, and gives
 example prompts. The rest of this README is for running and configuring the server.
 
@@ -19,27 +34,27 @@ The score is from `review_architecture`. Click a diagram for the full-size image
 
 <table>
 <tr>
-<td width="50%"><a href="docs/samples/azure_webapp_hub_spoke.png"><img src="docs/samples/azure_webapp_hub_spoke.png" alt="Azure web app, hub-spoke"></a><br><b>Azure web app, hub-spoke with warm DR</b><br><code>azure_webapp_hub_spoke</code>, review 94 (A)</td>
-<td width="50%"><a href="docs/samples/azure_aks_microservices.png"><img src="docs/samples/azure_aks_microservices.png" alt="Azure AKS microservices"></a><br><b>Azure AKS microservices</b><br><code>azure_aks_microservices</code>, review 97 (A)</td>
+<td width="50%"><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/azure_webapp_hub_spoke.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/azure_webapp_hub_spoke.png" alt="Azure web app, hub-spoke"></a><br><b>Azure web app, hub-spoke with warm DR</b><br><code>azure_webapp_hub_spoke</code>, review 94 (A)</td>
+<td width="50%"><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/azure_aks_microservices.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/azure_aks_microservices.png" alt="Azure AKS microservices"></a><br><b>Azure AKS microservices</b><br><code>azure_aks_microservices</code>, review 97 (A)</td>
 </tr>
 <tr>
-<td><a href="docs/samples/aws_three_tier.png"><img src="docs/samples/aws_three_tier.png" alt="AWS three-tier"></a><br><b>AWS three-tier web app</b><br><code>aws_three_tier</code>, review 86 (B)</td>
-<td><a href="docs/samples/aws_serverless_event_driven.png"><img src="docs/samples/aws_serverless_event_driven.png" alt="AWS serverless event-driven"></a><br><b>AWS serverless, event-driven</b><br><code>aws_serverless_event_driven</code>, review 100 (A)</td>
+<td><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/aws_three_tier.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/aws_three_tier.png" alt="AWS three-tier"></a><br><b>AWS three-tier web app</b><br><code>aws_three_tier</code>, review 86 (B)</td>
+<td><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/aws_serverless_event_driven.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/aws_serverless_event_driven.png" alt="AWS serverless event-driven"></a><br><b>AWS serverless, event-driven</b><br><code>aws_serverless_event_driven</code>, review 100 (A)</td>
 </tr>
 <tr>
-<td><a href="docs/samples/gcp_gke_microservices.png"><img src="docs/samples/gcp_gke_microservices.png" alt="GCP GKE microservices"></a><br><b>GCP GKE microservices</b><br><code>gcp_gke_microservices</code>, review 97 (A)</td>
-<td><a href="docs/samples/gcp_serverless_data.png"><img src="docs/samples/gcp_serverless_data.png" alt="GCP serverless and data"></a><br><b>GCP serverless and data platform</b><br><code>gcp_serverless_data</code>, review 81 (B)</td>
+<td><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/gcp_gke_microservices.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/gcp_gke_microservices.png" alt="GCP GKE microservices"></a><br><b>GCP GKE microservices</b><br><code>gcp_gke_microservices</code>, review 97 (A)</td>
+<td><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/gcp_serverless_data.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/gcp_serverless_data.png" alt="GCP serverless and data"></a><br><b>GCP serverless and data platform</b><br><code>gcp_serverless_data</code>, review 81 (B)</td>
 </tr>
 <tr>
-<td><a href="docs/samples/terraform_aws_plan.png"><img src="docs/samples/terraform_aws_plan.png" alt="Diagram imported from a Terraform plan"></a><br><b>Imported from Terraform</b><br><code>diagram_from_terraform</code> on <a href="examples/aws_plan.json">examples/aws_plan.json</a>, review 73 (C)</td>
-<td><a href="docs/samples/gcp_live_inventory.png"><img src="docs/samples/gcp_live_inventory.png" alt="Diagram of a running GCP platform from Cloud Asset Inventory"></a><br><b>A running GCP platform, from its inventory</b><br><code>diagram_from_inventory</code> on a real export (<a href="tests/fixtures/gcp_inventory_shop.json">identifiers replaced</a>), review 67 (C)</td>
+<td><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/terraform_aws_plan.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/terraform_aws_plan.png" alt="Diagram imported from a Terraform plan"></a><br><b>Imported from Terraform</b><br><code>diagram_from_terraform</code> on <a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/examples/aws_plan.json">examples/aws_plan.json</a>, review 73 (C)</td>
+<td><a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/samples/gcp_live_inventory.png"><img src="https://raw.githubusercontent.com/apatilgtn/architecture-diagrams/main/docs/samples/gcp_live_inventory.png" alt="Diagram of a running GCP platform from Cloud Asset Inventory"></a><br><b>A running GCP platform, from its inventory</b><br><code>diagram_from_inventory</code> on a real export (<a href="https://github.com/apatilgtn/architecture-diagrams/blob/main/tests/fixtures/gcp_inventory_shop.json">identifiers replaced</a>), review 67 (C)</td>
 </tr>
 </table>
 
 To regenerate them, run `python scripts/render_samples.py`.
 
 The server has also been tested end to end on Google Cloud: a private bucket with signed URLs, and a
-private Cloud Run service with two layers of auth. See [docs/CLOUD_TESTING.md](docs/CLOUD_TESTING.md) for
+private Cloud Run service with two layers of auth. See [docs/CLOUD_TESTING.md](https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/CLOUD_TESTING.md) for
 how it was tested, what was checked and the bug it found.
 
 ## Tools
@@ -112,7 +127,8 @@ For infrastructure that is already running, however it was created (console, `gc
 Terraform, Pulumi), export the project's inventory and pass it to `diagram_from_inventory`:
 
 ```bash
-gcloud asset list --project <project-id> --content-type resource   --asset-types "$(arch-diagram-mcp --gcp-asset-types)" --format json > assets.json
+gcloud asset list --project <project-id> --content-type resource \
+  --asset-types "$(arch-diagram-mcp --gcp-asset-types)" --format json > assets.json
 ```
 
 `--gcp-asset-types` prints the 54 asset types the importer uses. Asking only for those keeps the
@@ -305,3 +321,9 @@ docs/samples/      rendered sample diagrams shown above
 scripts/render_samples.py   regenerates docs/samples/
 scripts/e2e_cloud.py, run_impersonated.py   real-cloud end-to-end test tools
 ```
+
+## License
+
+[Apache-2.0](https://github.com/apatilgtn/architecture-diagrams/blob/main/LICENSE). The bundled provider
+icons come from the [diagrams](https://github.com/mingrammer/diagrams) library and remain subject to
+their owners' terms.

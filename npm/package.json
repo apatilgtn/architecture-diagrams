@@ -1,0 +1,23 @@
+{
+  "name": "arch-diagram-mcp",
+  "version": "1.2.0",
+  "description": "MCP server for AWS, Azure and GCP architecture diagrams with official icons (launches the Python package via uvx)",
+  "mcpName": "io.github.apatilgtn/architecture-diagrams",
+  "license": "Apache-2.0",
+  "author": "apatilgtn",
+  "homepage": "https://github.com/apatilgtn/architecture-diagrams#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apatilgtn/architecture-diagrams.git",
+    "directory": "npm"
+  },
+  "bugs": "https://github.com/apatilgtn/architecture-diagrams/issues",
+  "keywords": ["mcp", "model-context-protocol", "architecture-diagram", "aws", "azure", "gcp", "terraform"],
+  "bin": {
+    "arch-diagram-mcp": "bin/arch-diagram-mcp.js"
+  },
+  "files": ["bin", "README.md", "LICENSE"],
+  "engines": {
+    "node": ">=18"
+  }
+}

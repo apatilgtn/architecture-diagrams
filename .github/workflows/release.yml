@@ -1,0 +1,125 @@
+# Publishes a tagged release (v1.2.3) to PyPI, npm and the MCP Registry.
+# All three use OIDC trusted publishing: no tokens are stored in the repository.
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Graphviz
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends graphviz fonts-dejavu-core
+      - name: Install
+        run: python -m pip install -e ".[dev]" build twine jsonschema
+      - name: Test
+        run: python -m pytest -q
+      - name: Check every version matches the tag
+        run: |
+          python - <<'EOF'
+          import json, os, tomllib
+          tag = os.environ["GITHUB_REF_NAME"].removeprefix("v")
+          from arch_diagram_mcp import __version__
+          server = json.load(open("server.json"))
+          found = {
+              "pyproject.toml": tomllib.load(open("pyproject.toml", "rb"))["project"]["version"],
+              "__init__.py": __version__,
+              "server.json": server["version"],
+              **{f"server.json {p['registryType']}": p["version"] for p in server["packages"]},
+              "npm/package.json": json.load(open("npm/package.json"))["version"],
+          }
+          bad = {k: v for k, v in found.items() if v != tag}
+          if bad:
+              raise SystemExit(f"Versions do not match tag {tag}: {bad}")
+          print(f"All versions are {tag}")
+          EOF
+      - name: Validate server.json
+        run: |
+          curl -sSfL "$(jq -r '."$schema"' server.json)" -o /tmp/server.schema.json
+          python -c "import json, jsonschema; jsonschema.validate(json.load(open('server.json')), json.load(open('/tmp/server.schema.json'))); print('server.json is valid')"
+          grep -q "mcp-name: $(jq -r .name server.json)" README.md
+          test "$(jq -r .mcpName npm/package.json)" = "$(jq -r .name server.json)"
+      - name: Build
+        run: |
+          python -m build
+          python -m twine check --strict dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/arch-diagram-mcp/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  npm:
+    needs: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: npm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - name: Use npm with trusted publishing support
+        run: npm install -g npm@11
+      - name: Publish (skipped when this version is already on npm)
+        run: |
+          VERSION=$(jq -r .version package.json)
+          if npm view "arch-diagram-mcp@${VERSION}" version >/dev/null 2>&1; then
+            echo "arch-diagram-mcp@${VERSION} is already on npm; skipping."
+          else
+            npm publish --access public
+          fi
+
+  mcp-registry:
+    needs: [pypi, npm]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait until PyPI serves this version with the mcp-name marker
+        run: |
+          VERSION=$(jq -r .version server.json)
+          NAME=$(jq -r .name server.json)
+          for i in $(seq 1 20); do
+            if curl -sSf "https://pypi.org/pypi/arch-diagram-mcp/${VERSION}/json" | jq -e --arg n "mcp-name: ${NAME}" '.info.description | contains($n)' >/dev/null; then
+              echo "PyPI is ready"; exit 0
+            fi
+            sleep 15
+          done
+          echo "PyPI did not show ${VERSION} with the mcp-name marker in time" >&2; exit 1
+      - name: Install mcp-publisher
+        run: curl -sSfL "https://github.com/modelcontextprotocol/registry/releases/download/v1.8.4/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+      - name: Authenticate to the MCP Registry
+        run: ./mcp-publisher login github-oidc
+      - name: Publish to the MCP Registry
+        run: ./mcp-publisher publish

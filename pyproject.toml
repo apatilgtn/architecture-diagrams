@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,6 +8,24 @@ version = "1.2.0"
 description = "MCP server that generates and reviews AWS, Azure and GCP architecture diagrams with official provider icons."
 readme = "README.md"
 requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "apatilgtn" }]
+keywords = ["mcp", "model-context-protocol", "architecture-diagram", "aws", "azure", "gcp", "terraform", "graphviz"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: System :: Systems Administration",
+]
 dependencies = [
     "mcp[cli]>=2.3,<3",
     "diagrams>=0.25,<1",
@@ -21,6 +39,11 @@ azure = ["azure-storage-blob>=12.19", "azure-identity>=1.15"]
 gcs = ["google-cloud-storage>=2.14"]
 cloud = ["arch-diagram-mcp[s3,azure,gcs]"]
 dev = ["pytest>=8", "httpx>=0.27", "moto[s3]>=5", "arch-diagram-mcp[cloud]"]
+
+[project.urls]
+Homepage = "https://github.com/apatilgtn/architecture-diagrams"
+Documentation = "https://github.com/apatilgtn/architecture-diagrams/blob/main/docs/USER_GUIDE.md"
+Issues = "https://github.com/apatilgtn/architecture-diagrams/issues"
 
 [project.scripts]
 arch-diagram-mcp = "arch_diagram_mcp.__main__:main"

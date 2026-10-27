@@ -3,3 +3,7 @@ output/
 __pycache__/
 *.egg-info/
 .pytest_cache/
+build/
+dist/
+node_modules/
+*.tgz
