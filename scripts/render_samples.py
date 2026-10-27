@@ -11,7 +11,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from arch_diagram_mcp import renderer, review, template_library, terraform
+from arch_diagram_mcp import gcp_inventory, renderer, review, template_library, terraform
 from arch_diagram_mcp.config import Settings
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +28,11 @@ def main() -> None:
         specs = {t["id"]: template_library.get_template(t["id"]) for t in template_library.list_templates()}
         plan = json.loads((ROOT / "examples" / "aws_plan.json").read_text(encoding="utf-8"))
         specs["terraform_aws_plan"] = terraform.to_spec(plan, "AWS (from terraform show -json)").spec
+        # A real Cloud Asset Inventory export of a running test platform, with identifiers replaced.
+        inventory = json.loads((ROOT / "tests" / "fixtures" / "gcp_inventory_shop.json").read_text(encoding="utf-8"))
+        specs["gcp_live_inventory"] = gcp_inventory.to_spec(
+            inventory, "Running GCP platform (from Cloud Asset Inventory)", labels={"app": "shop"}
+        ).spec
 
         for name, spec in specs.items():
             spec = spec.model_copy(update={"output_formats": ["png"]})

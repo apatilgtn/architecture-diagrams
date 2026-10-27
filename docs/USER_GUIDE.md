@@ -180,7 +180,7 @@ These tokens expire after about an hour. With sign-in, what you can do depends o
 | Role | Can |
 |---|---|
 | Reader | Search icons, browse templates, validate and review specs |
-| Author | All of the above, plus render diagrams and import Terraform |
+| Author | All of the above, plus render diagrams and import Terraform or cloud inventories |
 
 If the server sits behind Cloud Run IAM or another gateway, your platform team will tell you about the
 extra header it needs. [CLOUD_TESTING.md](CLOUD_TESTING.md) shows the Cloud Run setup.
@@ -237,6 +237,58 @@ Then ask:
 
 A **plan** gives a better diagram than **state**, because it includes the references between
 resources. The result also lists the resource types it skipped, so you can see what's missing.
+
+### Diagram what's already running in Google Cloud
+
+Use this when services are already deployed, whether they were created in the console, with `gcloud`,
+by scripts or by any IaC tool. Google's Cloud Asset Inventory knows everything in the project, and the
+server turns its export into a diagram with the **real resource names**.
+
+1. Export the project's inventory. You need `roles/cloudasset.viewer` on the project, and the Cloud
+   Asset API enabled (`gcloud services enable cloudasset.googleapis.com`).
+
+   ```bash
+   gcloud asset list --project <project-id> --content-type resource \
+     --asset-types "$(arch-diagram-mcp --gcp-asset-types)" --format json > assets.json
+   ```
+
+   PowerShell:
+
+   ```powershell
+   gcloud asset list --project <project-id> --content-type resource `
+     --asset-types (arch-diagram-mcp --gcp-asset-types) --format json | Out-File -Encoding utf8 assets.json
+   ```
+
+   `--gcp-asset-types` prints the resource types the server understands, which keeps the file small.
+   If you connect to a shared server and don't have the command installed, ask your platform team for
+   the list, or leave `--asset-types` out (the export is then several times larger).
+
+2. Ask your assistant:
+
+   > Create a diagram of assets.json with diagram_from_inventory, titled "Payments platform (prod)",
+   > only resources labelled app=payments.
+
+What you get:
+- Project › VPC › Subnet boxes, with GKE clusters and their namespaces inside, and each resource
+  under its real name. A second line adds detail such as the database version or replica count.
+- Connections the configuration proves: load balancer › backends (with path rules, CDN and Cloud
+  Armor), Cloud Run › Cloud SQL, secrets, Pub/Sub, Redis, push subscriptions, Scheduler targets,
+  Eventarc triggers, VPC connectors, and URLs in environment variables matched to the services that
+  own them.
+
+Narrowing it down:
+
+| Ask for | Effect |
+|---|---|
+| `labels: {"app": "payments"}` | Only resources with that label, plus what they connect to (turn off with `include_neighbors: false`) |
+| `regions: ["europe-west1"]` | Only that region; global resources such as topics and load balancers stay |
+| `projects: [...]` | Only those projects, when the export covers several (for example `--folder` or `--organization`) |
+| `include_kubernetes: false` | GKE clusters without their workloads |
+
+The diagram can only show what the configuration contains. If `orders` calls `payments` through a
+hostname that is hard-coded in the application, ask the assistant to add that edge to the returned
+spec and render it again. Hostnames outside Google that appear in environment variables are listed as
+`external_hosts`, so you can decide whether to show them.
 
 ### Review an architecture
 
@@ -313,12 +365,16 @@ the spec and re-render it, so the diagram and the change are reviewed in the sam
 | `Graphviz 'dot' was not found` | Install Graphviz (section 2), then restart your assistant so it picks up the new PATH. |
 | `Unknown icon type '...'` | Ask the assistant to use the suggested ids, or to `search_icons` for the service. |
 | `401 Unauthorized` | The token is missing, wrong or expired. Company sign-in tokens last about an hour; get a new one. |
-| `Forbidden: '<you>' needs the '<role>' role ...` | Your sign-in lacks that role. Reader can't render or import Terraform; ask your platform team for the Author role. |
+| `Forbidden: '<you>' needs the '<role>' role ...` | Your sign-in lacks that role. Reader can't render or import Terraform or inventories; ask your platform team for the Author role. |
 | `421 Misdirected Request` | The URL's hostname isn't on the server's allow-list. Use exactly the URL your platform team gave you. |
 | Download link returns 400/403 | The link expired or was changed. Ask for the diagram again. |
 | `` `path` is disabled over HTTP `` | Shared servers don't read files from disk. Have the assistant send the Terraform JSON content instead. |
 | `Path is outside the allowed input roots` | Local server: add the folder to `ARCH_DIAGRAM_INPUT_ROOTS` and restart. |
 | Diagram is too big or rejected by limits | Split it (section 6). The default limits are 300 nodes, 800 edges and 100 clusters. |
+| `The inventory maps to N resources, above the ...-node limit` | Narrow it with `labels`, `regions` or `projects`, or export one project at a time. |
+| `gcloud asset list` fails with `PERMISSION_DENIED` or "API not enabled" | You need `roles/cloudasset.viewer`, and the project needs `cloudasset.googleapis.com` enabled. |
+| `INVALID_ARGUMENT: No RESOURCE found that matches asset type ...` | Your `--asset-types` list contains a name the API doesn't know. Use `arch-diagram-mcp --gcp-asset-types` from the latest version. |
+| A resource you expected is missing | Check `unmapped_asset_types` in the result, and whether a filter removed it (`filtered_out`). Resources created in the last few minutes may not be in the inventory yet. |
 | Text looks blurry on Windows | Upgrade to the latest version; it renders anti-aliased text with Segoe UI. |
 
 ## 9. Do and don't
@@ -333,6 +389,11 @@ the spec and re-render it, so the diagram and the change are reviewed in the sam
 - Send a full Terraform **state** file to a shared server unless you need to. State files can contain
   secrets. A plan (`terraform show -json plan.out`) is better for diagrams and usually safer, though
   plans can contain sensitive values too.
+- Send an inventory export to a shared server without thinking about what's in it. It contains your
+  resources' configuration, including the **values of environment variables** of Cloud Run services
+  and Kubernetes workloads. Secrets should be in Secret Manager (the export then only names them), but
+  if any are set as plain env vars, they travel with the file. The server never puts env values into
+  diagrams.
 - Share download links outside your team. Anyone with an unexpired link can open the file.
 
 For server setup, authentication modes, storage backends and every configuration option, see the

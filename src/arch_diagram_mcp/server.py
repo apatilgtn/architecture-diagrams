@@ -10,7 +10,7 @@ from mcp.server.mcpserver import Image, MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 from mcp.types import ToolAnnotations
 
-from . import __version__, auth, catalog, renderer, review, storage, template_library, terraform
+from . import __version__, auth, catalog, gcp_inventory, renderer, review, storage, template_library, terraform
 from .config import Settings
 from .logs import audit
 from .models import DiagramSpec, validate_spec
@@ -29,7 +29,9 @@ Workflow:
 2. Use search_icons to find exact icon ids (e.g. 'aws.compute.ECS', 'azure.compute.AKS', 'gcp.database.SQL').
 3. Call validate_diagram, fix every error, then generate_architecture_diagram.
 4. Call review_architecture and either fix findings or explain why they are accepted.
-For existing infrastructure, use diagram_from_terraform with `terraform show -json` output.
+For existing infrastructure, use diagram_from_terraform with `terraform show -json` output, or, for
+resources already running in Google Cloud (whatever created them), diagram_from_inventory with
+`gcloud asset list --content-type resource --format json` output. Both keep real resource names.
 
 Layout conventions: nest clusters the way providers draw boundaries
 (Cloud/Account > Region > VPC/VNet > Subnet/AZ; Subscription > Resource Group; Org > Project > VPC).
@@ -202,6 +204,68 @@ def create_server(settings: Settings, store: storage.ArtifactStore | None = None
                 return [json.dumps({**stats, "spec": spec.model_dump()}, indent=2)]
             return render(spec, {**stats, "spec": spec.model_dump()})
 
+    @mcp.tool(annotations=WRITES_FILES, structured_output=False)
+    def diagram_from_inventory(
+        title: str,
+        inventory_json: str | list[Any] | dict[str, Any] | None = None,
+        path: str | None = None,
+        provider: Literal["gcp"] = "gcp",
+        projects: list[str] | None = None,
+        regions: list[str] | None = None,
+        labels: dict[str, str] | None = None,
+        include_neighbors: bool = True,
+        include_kubernetes: bool = True,
+        render_diagram: bool = True,
+        direction: Literal["LR", "TB", "RL", "BT"] = "LR",
+        output_formats: list[Literal["png", "svg", "pdf", "jpg"]] | None = None,
+    ) -> list[Any]:
+        """Diagram infrastructure that is already running, from the cloud's own inventory, with real names.
+
+        Google Cloud: pass the output of
+        `gcloud asset list --project <id> --content-type resource --format json`
+        (or `gcloud asset export` newline-delimited JSON) in `inventory_json`, or a file `path` inside
+        the configured input roots. Works however the resources were created (console, gcloud, IaC).
+
+        Layout: Project > VPC > Subnet > GKE cluster > namespace. Edges come from configuration
+        (Cloud SQL/secret/Pub/Sub references, URLs matched to Cloud Run services, load balancer
+        backends, push subscriptions, Scheduler targets, VPC connectors). Filter with `projects`,
+        `regions` and `labels` (e.g. {"app": "payments"}); `include_neighbors` keeps resources that
+        matched resources connect to. Calls made only in application code are not visible: add those
+        edges to the returned spec and re-render with generate_architecture_diagram.
+        """
+        allow(auth.Permission.WRITE)
+        if path is not None and http:
+            raise ToolError("`path` is disabled over HTTP; send the export in `inventory_json`.")
+        with audit("diagram_from_inventory", provider=provider, from_path=bool(path)) as extra:
+            doc = _load_inventory(inventory_json, path, settings)
+            try:
+                imported = gcp_inventory.to_spec(
+                    doc, title, direction, projects=projects, regions=regions, labels=labels,
+                    include_neighbors=include_neighbors, include_kubernetes=include_kubernetes,
+                )
+            except ValueError as exc:
+                raise ToolError(str(exc)) from exc
+            if imported.mapped > settings.max_nodes:
+                raise ToolError(
+                    f"The inventory maps to {imported.mapped} resources, above the {settings.max_nodes}-node limit. "
+                    "Narrow it with `projects`, `regions` or `labels`, or export one project at a time."
+                )
+            spec = imported.spec
+            if output_formats:
+                spec.output_formats = output_formats
+            stats = {
+                "mapped_resources": imported.mapped,
+                "boundaries": imported.boundaries,
+                "edges": imported.edges,
+                "filtered_out": imported.filtered_out,
+                "unmapped_asset_types": imported.skipped_types,
+                "external_hosts": imported.external_hosts,
+            }
+            extra.update({k: v for k, v in stats.items() if isinstance(v, int)})
+            if not render_diagram:
+                return [json.dumps({**stats, "spec": spec.model_dump()}, indent=2)]
+            return render(spec, {**stats, "spec": spec.model_dump()})
+
     @mcp.tool(annotations=READ_ONLY)
     def server_info() -> dict[str, Any]:
         """Report version, Graphviz status, icon count, storage, auth mode, caller identity and limits."""
@@ -244,24 +308,39 @@ def create_server(settings: Settings, store: storage.ArtifactStore | None = None
     return mcp
 
 
-def _load_terraform(text: str | dict[str, Any] | None, path: str | None, settings: Settings) -> dict[str, Any]:
+def _read_input(text: Any, path: str | None, settings: Settings, *, arg: str, what: str, suffixes: set[str]) -> str:
+    """Return JSON text from an inline argument or a file inside the input roots, enforcing the size limit."""
     if (text is None) == (path is None):
-        raise ToolError("Provide exactly one of `terraform_json` or `path`.")
-    if isinstance(text, dict):  # clients may send the JSON object itself
+        raise ToolError(f"Provide exactly one of `{arg}` or `path`.")
+    if isinstance(text, (dict, list)):  # clients may send the JSON value itself
         text = json.dumps(text)
     if path is not None:
         p = Path(path).expanduser().resolve()
         if not any(p.is_relative_to(root) for root in settings.input_roots):
             roots = ", ".join(str(r) for r in settings.input_roots)
             raise ToolError(f"Path is outside the allowed input roots ({roots}). Set ARCH_DIAGRAM_INPUT_ROOTS to allow it.")
-        if p.suffix.lower() not in {".json", ".tfstate"} or not p.is_file():
-            raise ToolError(f"'{p}' is not a .json or .tfstate file.")
+        if p.suffix.lower() not in suffixes or not p.is_file():
+            raise ToolError(f"'{p}' is not a {' or '.join(sorted(suffixes))} file.")
         if p.stat().st_size > settings.max_terraform_bytes:
             raise ToolError(f"'{p}' exceeds the {settings.max_terraform_bytes // (1024 * 1024)} MB limit.")
         text = p.read_text(encoding="utf-8-sig")
-    assert text is not None
+    assert isinstance(text, str)
     if len(text.encode()) > settings.max_terraform_bytes:
-        raise ToolError(f"Terraform JSON exceeds the {settings.max_terraform_bytes // (1024 * 1024)} MB limit.")
+        raise ToolError(f"{what} exceeds the {settings.max_terraform_bytes // (1024 * 1024)} MB limit.")
+    return text
+
+
+def _load_inventory(text: Any, path: str | None, settings: Settings) -> Any:
+    raw = _read_input(text, path, settings, arg="inventory_json", what="Inventory JSON",
+                      suffixes={".json", ".ndjson", ".jsonl"})
+    try:
+        return gcp_inventory.parse_text(raw)
+    except json.JSONDecodeError as exc:
+        raise ToolError(f"Invalid JSON: {exc}") from exc
+
+
+def _load_terraform(text: str | dict[str, Any] | None, path: str | None, settings: Settings) -> dict[str, Any]:
+    text = _read_input(text, path, settings, arg="terraform_json", what="Terraform JSON", suffixes={".json", ".tfstate"})
     try:
         doc = json.loads(text)
     except json.JSONDecodeError as exc:

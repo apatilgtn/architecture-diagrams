@@ -5,6 +5,9 @@
 Kubernetes, on-prem and SaaS services such as PostgreSQL, Redis, Kafka and Nginx. Diagrams render
 through Graphviz to PNG, self-contained SVG, PDF or JPG.
 
+You can design new architectures, or diagram what already exists: from Terraform, or straight from a
+running Google Cloud project's own inventory, with the real resource names, however it was created.
+
 **Using it as a developer?** Start with the [developer guide](docs/USER_GUIDE.md). It covers connecting
 Claude Code, VS Code, Cursor or Claude Desktop, on your machine or to a shared team server, and gives
 example prompts. The rest of this README is for running and configuring the server.
@@ -29,7 +32,7 @@ The score is from `review_architecture`. Click a diagram for the full-size image
 </tr>
 <tr>
 <td><a href="docs/samples/terraform_aws_plan.png"><img src="docs/samples/terraform_aws_plan.png" alt="Diagram imported from a Terraform plan"></a><br><b>Imported from Terraform</b><br><code>diagram_from_terraform</code> on <a href="examples/aws_plan.json">examples/aws_plan.json</a>, review 73 (C)</td>
-<td></td>
+<td><a href="docs/samples/gcp_live_inventory.png"><img src="docs/samples/gcp_live_inventory.png" alt="Diagram of a running GCP platform from Cloud Asset Inventory"></a><br><b>A running GCP platform, from its inventory</b><br><code>diagram_from_inventory</code> on a real export (<a href="tests/fixtures/gcp_inventory_shop.json">identifiers replaced</a>), review 67 (C)</td>
 </tr>
 </table>
 
@@ -50,6 +53,7 @@ how it was tested, what was checked and the bug it found.
 | `generate_architecture_diagram(spec)` | Renders the diagram; returns file paths, a JSON summary and an inline PNG preview |
 | `review_architecture(spec)` | Runs a heuristic Well-Architected review and returns a 0–100 score, a grade and findings with recommendations |
 | `diagram_from_terraform(title, terraform_json \| path, ...)` | Builds a diagram from `terraform show -json` output (plan or state) or a raw `.tfstate` file |
+| `diagram_from_inventory(title, inventory_json \| path, projects?, regions?, labels?, ...)` | Builds a diagram of resources already running in Google Cloud from a Cloud Asset Inventory export, with real names |
 | `server_info()` | Reports the version, Graphviz status, icon count, output directory and limits |
 
 There is also one prompt, `design_architecture(provider, workload, requirements)`. It walks the model
@@ -103,6 +107,41 @@ configuration's references.
   assignments, Front Door origins and backend services.
 - **Unmapped types:** the result lists them, so you can see what was left out.
 
+### Inventory import (Google Cloud)
+For infrastructure that is already running, however it was created (console, `gcloud`, scripts,
+Terraform, Pulumi), export the project's inventory and pass it to `diagram_from_inventory`:
+
+```bash
+gcloud asset list --project <project-id> --content-type resource   --asset-types "$(arch-diagram-mcp --gcp-asset-types)" --format json > assets.json
+```
+
+`--gcp-asset-types` prints the 54 asset types the importer uses. Asking only for those keeps the
+export small: a test project went from 4.4 MB to 535 KB with the same diagram. The caller needs
+`roles/cloudasset.viewer` and the Cloud Asset API enabled.
+
+- **Names:** every node keeps its real name. A second line adds detail, such as the database version,
+  machine type, ingress setting, replica count or cron schedule.
+- **Boundaries:** Project › VPC › Subnet › GKE cluster › Namespace. Shared VPC networks owned by
+  another project are drawn under that project. Cloud Run with direct VPC egress sits in its subnet.
+- **Edges from configuration:**
+  - Cloud SQL, secret, KMS, Pub/Sub, bucket and Redis references in annotations and environment variables;
+  - URLs matched to the Cloud Run service or function that owns them (push subscriptions, Scheduler
+    targets, env vars);
+  - the load balancer chain (forwarding rule › proxy › URL map › backend › NEG, bucket or MIG), with
+    path rules, CDN and Cloud Armor;
+  - Eventarc triggers, dead-letter topics, BigQuery and Cloud Storage subscriptions, VPC connectors.
+- **Noise left out:** GKE system namespaces and nodes, MIG member VMs (drawn as one MIG), Cloud
+  Functions' own Run services, build and staging buckets, routes, firewalls and RBAC objects.
+- **Filters:** `projects` and `regions` are hard limits. `labels` (for example `{"app": "payments"}`)
+  selects resources plus the ones they connect to (`include_neighbors`, on by default).
+- **Limits:** calls that exist only in application code can't be seen. The result returns the spec,
+  so you can add those edges and re-render. External hosts found in env vars are listed in
+  `external_hosts`.
+
+Accepted formats: `gcloud asset list` JSON (recommended), `gcloud asset export` newline-delimited
+JSON, and `gcloud asset search-all-resources --read-mask='*'` JSON. Azure Resource Graph and AWS
+inventories are planned.
+
 ## Install
 
 Requires Python 3.11+ and Graphviz.
@@ -111,7 +150,7 @@ Requires Python 3.11+ and Graphviz.
 winget install Graphviz.Graphviz        # Linux: apt install graphviz   macOS: brew install graphviz
 python -m venv .venv
 .venv\Scripts\python -m pip install -e ".[dev]"
-.venv\Scripts\python -m pytest            # 70 tests
+.venv\Scripts\python -m pytest            # 85 tests
 ```
 
 ### Register with Claude Code (stdio)
@@ -123,13 +162,13 @@ claude mcp add architecture-diagrams -s user `
 
 ### Run as a shared HTTP service
 ```bash
-docker build -t arch-diagram-mcp:1.1.1 .
+docker build -t arch-diagram-mcp:1.2.0 .
 docker run -d -p 8000:8000 -v diagrams:/data \
   -e ARCH_DIAGRAM_AUTH_TOKENS="ci=$(openssl rand -hex 32),platform-team=$(openssl rand -hex 32)" \
   -e ARCH_DIAGRAM_PUBLIC_BASE_URL=https://diagrams.internal.example.com \
   -e ARCH_DIAGRAM_URL_SIGNING_KEY=$(openssl rand -hex 32) \
   -e ARCH_DIAGRAM_ALLOWED_HOSTS="diagrams.internal.example.com:*" \
-  arch-diagram-mcp:1.1.1
+  arch-diagram-mcp:1.2.0
 ```
 Clients connect to `https://<host>/mcp` with `Authorization: Bearer <token>`. `GET /healthz` is
 unauthenticated and works as a probe. The server runs stateless, so it scales horizontally behind a
@@ -153,7 +192,7 @@ discovery or set with `ARCH_DIAGRAM_OIDC_JWKS_URI`). It checks:
 
 Roles come from the `roles` claim (Entra app roles) and the `scp` scope claim:
 - **Reader:** search, templates, validate, review.
-- **Author:** also render and import Terraform. Author implies Reader.
+- **Author:** also render, and import Terraform or cloud inventories. Author implies Reader.
 - If neither role variable is set, any valid token gets full access.
 
 The server publishes RFC 9728 metadata at `/.well-known/oauth-protected-resource`, and every 401
@@ -251,13 +290,15 @@ src/arch_diagram_mcp/
   renderer.py      Graphviz source build, timed subprocess render, themes, SVG inlining, retention
   review.py        Well-Architected heuristic rules and scoring
   terraform.py     Terraform plan/state -> spec
+  gcp_inventory.py Cloud Asset Inventory export of running GCP resources -> spec
   template_library.py + templates/*.json   reference architectures
   auth.py          principals, static-token + OIDC authenticators, RBAC
   storage.py       local signed links, S3 / Azure Blob / GCS uploads with signed URLs
   http_app.py      streamable-HTTP app, auth middleware, OAuth resource metadata, /artifacts, /healthz
   config.py, logs.py, __main__.py
-tests/             70 tests: catalog, validation, rendering, label injection, review, Terraform, MCP tools,
-                   HTTP auth, OIDC (incl. attack tokens), RBAC, signed links, S3 (moto), Azure SAS, GCS V4
+tests/             85 tests: catalog, validation, rendering, label injection, review, Terraform, GCP
+                   inventory (real export fixture), MCP tools, HTTP auth, OIDC (incl. attack tokens), RBAC,
+                   signed links, S3 (moto), Azure SAS, GCS V4
 docs/USER_GUIDE.md      developer guide: connecting clients, example prompts, troubleshooting
 docs/CLOUD_TESTING.md   how the server was tested on real Google Cloud
 docs/samples/      rendered sample diagrams shown above

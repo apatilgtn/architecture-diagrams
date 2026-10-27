@@ -9,6 +9,9 @@ This document describes how the test ran, what it checked, what it found and how
 Identifiers (project, accounts, bucket, hostnames) are shown as placeholders. Every resource was
 deleted after the run.
 
+Version 1.2.0's inventory import was built and tested against a live platform the same way; see
+[Inventory import against a running platform](#inventory-import-against-a-running-platform-120).
+
 | | |
 |---|---|
 | Date | 2026-10-27 |
@@ -186,8 +189,57 @@ Compute service account. The local token files and test output were deleted too.
 
 4. Delete everything. The cost of a run is a few cents.
 
+## Inventory import against a running platform (1.2.0)
+
+`diagram_from_inventory` was written against what Cloud Asset Inventory really returns, not against
+the documentation's idea of it. A small but realistic platform was deployed into a test project, its
+inventory was exported, and the importer was built and checked against that export.
+
+**The platform** (created with `gcloud` and `kubectl`, the way many real platforms are, not Terraform):
+
+| Layer | Resources |
+|---|---|
+| Network | Custom VPC, two subnets, Private Service Access range and peering, Serverless VPC Access connector |
+| Edge | Global external HTTP load balancer: forwarding rule, proxy, URL map with a `/static/*` path rule, backend service on a serverless NEG, CDN-enabled backend bucket |
+| Compute | Three Cloud Run services (one with direct VPC egress, one through the connector), GKE Autopilot with a `shop` namespace running a Deployment and a CronJob, a VM |
+| Data | Cloud SQL for PostgreSQL (private IP), Memorystore for Redis, a bucket, a BigQuery dataset |
+| Integration | Pub/Sub topic with a push subscription and a dead-letter topic, a Cloud Scheduler job |
+| Security and delivery | A Secret Manager secret, a dedicated runtime service account, an Artifact Registry repository |
+
+Connections were set the way teams usually set them: Cloud SQL in a Cloud Run annotation, the secret
+as a `secretKeyRef`, the topic path and another service's URL in environment variables, and the Redis
+IP in a GKE workload's `REDIS_HOST`. Cloud Armor could not be created because the test project's quota
+for security policies is 0, so it is covered by a unit test instead.
+
+**What the real export showed**, and what the importer does about it:
+
+| Observation | Handling |
+|---|---|
+| 1,002 assets for about 25 real resources: GKE system objects, RBAC, routes, and the auto-created `default` network with 40+ subnets | Noise types are ignored; empty boundaries are dropped; GKE system namespaces are skipped |
+| The same project appears as an ID in some names and a number in others (secrets, VPC connectors) | Numbers are mapped to IDs, from the Project asset or by pairing names with ancestors |
+| References come in many forms: full URLs, `projects/...` paths, bare names, `project:region:instance`, service URLs, IPs | One resolver handles each form; Cloud Run services are found from the URLs they list |
+| Five region-scoped type names (`RegionUrlMap` and others) are rejected by the API | Removed; regional variants are reported under the global type names |
+| The full export is 4.4 MB | `--asset-types "$(arch-diagram-mcp --gcp-asset-types)"` cuts it to 535 KB with an identical diagram |
+| The test project also held unrelated resources (a VM in the `default` network) | Correctly drawn when unfiltered and excluded by `labels: {"app": "shop"}` |
+
+**Result.** From the full live export, through a real MCP client over stdio, the tool produced 20
+resources with their real names and 13 connections, every one of them backed by configuration. With
+`labels={"app": "shop"}` it produced 18 resources and the same 13 connections, in about one second.
+The sample in the [README gallery](../README.md#samples) is that diagram, rendered from the sanitised
+export.
+
+The export is kept, with identifiers replaced, as
+[tests/fixtures/gcp_inventory_shop.json](../tests/fixtures/gcp_inventory_shop.json). Tests assert every
+node's placement and the exact set of edges against it, so later changes are checked against real
+data. Further unit tests cover what the platform did not include: Cloud Functions gen2, Cloud Armor,
+managed instance groups, Eventarc, Shared VPC, and the `gcloud asset export` and
+`search-all-resources` formats.
+
+Everything was deleted afterwards. The test project's own unrelated resources were left untouched.
+
 ## Not yet tested on a real provider
 
+- **Inventory import for Azure and AWS** (Resource Graph, AWS Config / Resource Explorer): not built yet.
 - **Azure Blob Storage** (SAS by account key and by user delegation key with managed identity) and
   **Amazon S3** (SigV4 presigned URLs, SSE-KMS). Both have unit tests only. The same script works
   against them: change `ARCH_DIAGRAM_STORAGE` and the hosting platform.

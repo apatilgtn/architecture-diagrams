@@ -27,6 +27,7 @@ def test_all_tools_registered(settings):
         "generate_architecture_diagram",
         "review_architecture",
         "diagram_from_terraform",
+        "diagram_from_inventory",
         "server_info",
     }
 

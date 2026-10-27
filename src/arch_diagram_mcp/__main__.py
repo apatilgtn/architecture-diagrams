@@ -17,7 +17,17 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--host", help="HTTP bind address (default ARCH_DIAGRAM_HTTP_HOST or 127.0.0.1)")
     parser.add_argument("--port", type=int, help="HTTP port (default ARCH_DIAGRAM_HTTP_PORT or 8000)")
     parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument(
+        "--gcp-asset-types", action="store_true",
+        help="Print the Cloud Asset Inventory types diagram_from_inventory uses, for `gcloud asset list --asset-types`",
+    )
     args = parser.parse_args(argv)
+    if args.gcp_asset_types:
+        from .gcp_inventory import SUPPORTED_ASSET_TYPES
+
+        # No trailing newline: on Windows it would be \r\n, and Git Bash's $(...) keeps the \r.
+        print(",".join(SUPPORTED_ASSET_TYPES), end="")
+        return
 
     settings = Settings.from_env()
     if args.host:

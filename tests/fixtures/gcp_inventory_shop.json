@@ -1,0 +1,2992 @@
+[
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "artifactregistry.googleapis.com/Repository",
+  "name": "//artifactregistry.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/repositories/shop-images",
+  "resource": {
+   "data": {
+    "createTime": "2026-10-27T08:05:12.181613Z",
+    "dockerConfig": {},
+    "format": "DOCKER",
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "mode": "STANDARD_REPOSITORY",
+    "name": "projects/acme-shop-prod/locations/australia-southeast1/repositories/shop-images",
+    "satisfiesPzi": true,
+    "satisfiesPzs": true,
+    "updateTime": "2026-10-27T08:05:12.181613Z",
+    "vulnerabilityScanningConfig": {
+     "lastEnableTime": "2026-10-27T08:05:10.721505921Z"
+    }
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "bigquery.googleapis.com/Dataset",
+  "name": "//bigquery.googleapis.com/projects/acme-shop-prod/datasets/shop_analytics",
+  "resource": {
+   "data": {
+    "creationTime": "1793088360011",
+    "datasetReference": {
+     "datasetId": "shop_analytics",
+     "projectId": "acme-shop-prod"
+    },
+    "kind": "bigquery#dataset",
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "lastModifiedTime": "1793088360011",
+    "location": "australia-southeast1",
+    "satisfiesPzs": false,
+    "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/acme-shop-prod/datasets/shop_analytics/projects/acme-shop-prod/datasets/shop_analytics",
+    "type": "DEFAULT"
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "cloudresourcemanager.googleapis.com/Project",
+  "name": "//cloudresourcemanager.googleapis.com/projects/123456789012",
+  "resource": {
+   "data": {
+    "createTime": "2026-10-18T06:59:34.55Z",
+    "lifecycleState": "ACTIVE",
+    "name": "Acme Shop (prod)",
+    "parent": {
+     "type": "organization"
+    },
+    "projectId": "acme-shop-prod",
+    "projectNumber": "123456789012"
+   },
+   "parent": "//cloudresourcemanager.googleapis.com/organizations/000000000000"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "cloudscheduler.googleapis.com/Job",
+  "name": "//cloudscheduler.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/jobs/nightly-report",
+  "resource": {
+   "data": {
+    "attemptDeadline": "180s",
+    "httpTarget": {
+     "headers": {
+      "User-Agent": "Google-Cloud-Scheduler"
+     },
+     "httpMethod": "POST",
+     "uri": "https://orders-api-abcd1234ef-ts.a.run.app/reports/nightly"
+    },
+    "name": "projects/acme-shop-prod/locations/australia-southeast1/jobs/nightly-report",
+    "retryConfig": {
+     "maxBackoffDuration": "3600s",
+     "maxDoublings": 16,
+     "maxRetryDuration": "0s",
+     "minBackoffDuration": "5s"
+    },
+    "schedule": "0 2 * * *",
+    "scheduleTime": "2026-10-28T02:00:00Z",
+    "state": "ENABLED",
+    "timeZone": "Etc/UTC",
+    "userUpdateTime": "2026-10-27T08:12:33.186477Z"
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "sqladmin.googleapis.com/Instance",
+  "name": "//cloudsql.googleapis.com/projects/acme-shop-prod/instances/shop-db",
+  "resource": {
+   "data": {
+    "backendType": "SECOND_GEN",
+    "connectionName": "acme-shop-prod:australia-southeast1:shop-db",
+    "createTime": "2026-10-27T08:05:57.978Z",
+    "databaseInstalledVersion": "POSTGRES_14_24",
+    "databaseVersion": "POSTGRES_14",
+    "gceZone": "australia-southeast1-a",
+    "includeReplicasForMajorVersionUpgrade": false,
+    "instanceType": "CLOUD_SQL_INSTANCE",
+    "ipAddresses": [
+     {
+      "ipAddress": "10.100.0.3",
+      "type": "PRIVATE"
+     }
+    ],
+    "kind": "sql#instance",
+    "maintenanceVersion": "POSTGRES_14_24.R20260712.01_44",
+    "name": "shop-db",
+    "project": "acme-shop-prod",
+    "region": "australia-southeast1",
+    "satisfiesPzi": false,
+    "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/acme-shop-prod/instances/shop-db",
+    "serviceAccountEmailAddress": "p123456789012-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+    "settings": {
+     "activationPolicy": "ALWAYS",
+     "availabilityType": "ZONAL",
+     "backupConfiguration": {
+      "backupRetentionSettings": {
+       "retainedBackups": 7,
+       "retentionUnit": "COUNT"
+      },
+      "backupTier": "STANDARD",
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "03:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+     },
+     "connectorEnforcement": "NOT_REQUIRED",
+     "dataDiskSizeGb": "10",
+     "dataDiskType": "PD_SSD",
+     "deletionProtectionEnabled": false,
+     "edition": "ENTERPRISE",
+     "enableDataplexIntegration": true,
+     "ipConfiguration": {
+      "ipv4Enabled": false,
+      "privateNetwork": "projects/acme-shop-prod/global/networks/shop-vpc",
+      "requireSsl": false,
+      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+     },
+     "kind": "sql#settings",
+     "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "australia-southeast1-a"
+     },
+     "pricingPlan": "PER_USE",
+     "replicationLagMaxSeconds": 31536000,
+     "replicationType": "SYNCHRONOUS",
+     "settingsVersion": "1",
+     "storageAutoResize": true,
+     "storageAutoResizeLimit": "0",
+     "tier": "db-f1-micro"
+    },
+    "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+    "state": "RUNNABLE"
+   },
+   "location": "australia-southeast1-a",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/BackendBucket",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/backendBuckets/shop-static",
+  "resource": {
+   "data": {
+    "bucketName": "shop-assets-acme",
+    "cdnPolicy": {
+     "cacheMode": "CACHE_ALL_STATIC",
+     "clientTtl": 3600,
+     "defaultTtl": 3600,
+     "maxTtl": 86400,
+     "negativeCaching": true,
+     "requestCoalescing": true,
+     "serveWhileStale": 86400
+    },
+    "description": "",
+    "enableCdn": true,
+    "name": "shop-static",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/backendBuckets/shop-static",
+    "usedBy": [
+     {
+      "reference": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/urlMaps/shop-lb"
+     }
+    ]
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/BackendService",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/backendServices/shop-web-be",
+  "resource": {
+   "data": {
+    "affinityCookieTtlSec": 0,
+    "backends": [
+     {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/networkEndpointGroups/shop-web-neg"
+     }
+    ],
+    "connectionDraining": {
+     "drainingTimeoutSec": 0
+    },
+    "description": "",
+    "enableCDN": false,
+    "loadBalancingScheme": "EXTERNAL_MANAGED",
+    "name": "shop-web-be",
+    "port": 80,
+    "portName": "http",
+    "protocol": "HTTP",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/backendServices/shop-web-be",
+    "sessionAffinity": "NONE",
+    "timeoutSec": 30,
+    "usedBy": [
+     {
+      "reference": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/urlMaps/shop-lb"
+     }
+    ]
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/GlobalForwardingRule",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/forwardingRules/shop-fr",
+  "resource": {
+   "data": {
+    "IPAddress": "203.0.113.10",
+    "IPProtocol": "TCP",
+    "description": "",
+    "labelFingerprint": "42WmSpB8rSM=",
+    "loadBalancingScheme": "EXTERNAL_MANAGED",
+    "name": "shop-fr",
+    "networkTier": "PREMIUM",
+    "portRange": "80-80",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/forwardingRules/shop-fr",
+    "target": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/targetHttpProxies/shop-http-proxy"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/Instance",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/zones/australia-southeast1-a/instances/ops-bastion",
+  "resource": {
+   "data": {
+    "canIpForward": false,
+    "cpuPlatform": "Intel Broadwell",
+    "deletionProtection": false,
+    "disks": [
+     {
+      "architecture": "X86_64",
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "10",
+      "guestOsFeatures": [
+       {
+        "type": "UEFI_COMPATIBLE"
+       },
+       {
+        "type": "VIRTIO_SCSI_MULTIQUEUE"
+       },
+       {
+        "type": "GVNIC"
+       },
+       {
+        "type": "SEV_CAPABLE"
+       },
+       {
+        "type": "SEV_LIVE_MIGRATABLE_V2"
+       },
+       {
+        "type": "SUSPEND_SAFE_FPR"
+       }
+      ],
+      "index": 0,
+      "interface": "SCSI",
+      "licenses": [
+       "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-12-bookworm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-a/disks/ops-bastion",
+      "type": "PERSISTENT"
+     }
+    ],
+    "labelFingerprint": "3vAerHzS+5U=",
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "lastStartTimestamp": "2026-10-27T01:10:21.465-07:00",
+    "machineType": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-a/machineTypes/e2-micro",
+    "metadata": {
+     "items": [
+      {
+       "key": "vm-dns-setting",
+       "value": "ZonalOnly"
+      }
+     ]
+    },
+    "name": "ops-bastion",
+    "networkInterfaces": [
+     {
+      "name": "nic0",
+      "network": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/networks/shop-vpc",
+      "networkIP": "10.10.0.2",
+      "stackType": "IPV4_ONLY",
+      "subnetwork": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-app"
+     }
+    ],
+    "resourceStatus": {
+     "effectiveInstanceMetadata": {
+      "vmDnsSettingMetadataValue": "ZonalOnly"
+     },
+     "scheduling": {}
+    },
+    "satisfiesPzi": true,
+    "scheduling": {
+     "automaticRestart": true,
+     "onHostMaintenance": "MIGRATE",
+     "preemptible": false,
+     "provisioningModel": "STANDARD"
+    },
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-a/instances/ops-bastion",
+    "serviceAccounts": [
+     {
+      "email": "123456789012-compute@developer.gserviceaccount.com",
+      "scopes": [
+       "https://www.googleapis.com/auth/devstorage.read_only",
+       "https://www.googleapis.com/auth/logging.write",
+       "https://www.googleapis.com/auth/monitoring.write",
+       "https://www.googleapis.com/auth/pubsub",
+       "https://www.googleapis.com/auth/service.management.readonly",
+       "https://www.googleapis.com/auth/servicecontrol",
+       "https://www.googleapis.com/auth/trace.append"
+      ]
+     }
+    ],
+    "shieldedInstanceConfig": {
+     "enableIntegrityMonitoring": true,
+     "enableSecureBoot": false,
+     "enableVtpm": true
+    },
+    "shieldedInstanceIntegrityPolicy": {
+     "updateAutoLearnPolicy": true
+    },
+    "startRestricted": false,
+    "status": "RUNNING",
+    "tags": {},
+    "zone": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-a"
+   },
+   "location": "australia-southeast1-a",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/Network",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/networks/shop-vpc",
+  "resource": {
+   "data": {
+    "autoCreateSubnetworks": false,
+    "name": "shop-vpc",
+    "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+    "peerings": [
+     {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+       "trafficConfiguration": {
+        "exportCustomRoutesToPeer": false,
+        "exportSubnetRoutesWithPublicIpToPeer": true,
+        "importCustomRoutesFromPeer": false,
+        "importSubnetRoutesWithPublicIpFromPeer": true,
+        "stackType": "IPV4_ONLY"
+       },
+       "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "redis-peer-250276153688",
+      "network": "https://www.googleapis.com/compute/v1/projects/google-managed-tenant-tp/global/networks/shop-vpc",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-10-27T01:05:42.471-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+     },
+     {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+       "trafficConfiguration": {
+        "exportCustomRoutesToPeer": false,
+        "exportSubnetRoutesWithPublicIpToPeer": false,
+        "importCustomRoutesFromPeer": false,
+        "importSubnetRoutesWithPublicIpFromPeer": false,
+        "stackType": "IPV4_ONLY"
+       },
+       "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": false,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": false,
+      "name": "servicenetworking-googleapis-com",
+      "network": "https://www.googleapis.com/compute/v1/projects/y94b1d7433a79a1a8p-tp/global/networks/servicenetworking",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-10-27T01:03:41.027-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+     }
+    ],
+    "routingConfig": {
+     "bgpBestPathSelectionMode": "LEGACY",
+     "routingMode": "REGIONAL"
+    },
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/networks/shop-vpc",
+    "subnetworks": [
+     "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/aet-australiasoutheast1-shop--conn-sbnt",
+     "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-app",
+     "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-gke"
+    ]
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/NetworkEndpointGroup",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/regions/australia-southeast1/networkEndpointGroups/shop-web-neg",
+  "resource": {
+   "data": {
+    "cloudRun": {
+     "service": "shop-web"
+    },
+    "name": "shop-web-neg",
+    "networkEndpointType": "SERVERLESS",
+    "region": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/networkEndpointGroups/shop-web-neg",
+    "size": 0
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/Route",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/routes/default-route-628e06dfb4bbef36",
+  "resource": {
+   "data": {
+    "description": "Default route to the Internet.",
+    "destRange": "0.0.0.0/0",
+    "name": "default-route-628e06dfb4bbef36",
+    "network": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/networks/shop-vpc",
+    "nextHopGateway": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/gateways/default-internet-gateway",
+    "priority": 1000,
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/routes/default-route-628e06dfb4bbef36"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/Route",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/routes/default-route-r-8c4ccc8cb1788e92",
+  "resource": {
+   "data": {
+    "description": "Default local route to the subnetwork 10.10.0.0/24.",
+    "destRange": "10.10.0.0/24",
+    "name": "default-route-r-8c4ccc8cb1788e92",
+    "network": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/networks/shop-vpc",
+    "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/networks/shop-vpc",
+    "priority": 0,
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/routes/default-route-r-8c4ccc8cb1788e92"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/Subnetwork",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-app",
+  "resource": {
+   "data": {
+    "allowSubnetCidrRoutesOverlap": false,
+    "gatewayAddress": "10.10.0.1",
+    "ipCidrRange": "10.10.0.0/24",
+    "name": "shop-app",
+    "network": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/networks/shop-vpc",
+    "privateIpGoogleAccess": true,
+    "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+    "purpose": "PRIVATE",
+    "region": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-app",
+    "stackType": "IPV4_ONLY"
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/Subnetwork",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-gke",
+  "resource": {
+   "data": {
+    "allowSubnetCidrRoutesOverlap": false,
+    "gatewayAddress": "10.20.0.1",
+    "ipCidrRange": "10.20.0.0/22",
+    "name": "shop-gke",
+    "network": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/networks/shop-vpc",
+    "privateIpGoogleAccess": true,
+    "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+    "purpose": "PRIVATE",
+    "region": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1",
+    "secondaryIpRanges": [
+     {
+      "ipCidrRange": "10.19.0.0/17",
+      "rangeName": "gke-shop-gke-pods-6356f7e7",
+      "reservedInternalRange": "https://networkconnectivity.googleapis.com/v1/projects/acme-shop-prod/locations/global/internalRanges/gke-shop-gke-pods-6356f7e7"
+     }
+    ],
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-gke",
+    "stackType": "IPV4_ONLY"
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/TargetHttpProxy",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/targetHttpProxies/shop-http-proxy",
+  "resource": {
+   "data": {
+    "name": "shop-http-proxy",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/targetHttpProxies/shop-http-proxy",
+    "urlMap": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/urlMaps/shop-lb"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "compute.googleapis.com/UrlMap",
+  "name": "//compute.googleapis.com/projects/acme-shop-prod/global/urlMaps/shop-lb",
+  "resource": {
+   "data": {
+    "defaultService": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/backendServices/shop-web-be",
+    "hostRules": [
+     {
+      "hosts": [
+       "*"
+      ],
+      "pathMatcher": "static"
+     }
+    ],
+    "name": "shop-lb",
+    "pathMatchers": [
+     {
+      "defaultService": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/backendServices/shop-web-be",
+      "name": "static",
+      "pathRules": [
+       {
+        "paths": [
+         "/static/*"
+        ],
+        "service": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/backendBuckets/shop-static"
+       }
+      ]
+     }
+    ],
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/global/urlMaps/shop-lb"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "container.googleapis.com/Cluster",
+  "name": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke",
+  "resource": {
+   "data": {
+    "addonsConfig": {
+     "dnsCacheConfig": {
+      "enabled": true
+     },
+     "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+     },
+     "gcpFilestoreCsiDriverConfig": {
+      "enabled": true
+     },
+     "gcsFuseCsiDriverConfig": {
+      "enabled": true
+     },
+     "kubernetesDashboard": {
+      "disabled": true
+     },
+     "networkPolicyConfig": {
+      "disabled": true
+     },
+     "nodeReadinessConfig": {},
+     "parallelstoreCsiDriverConfig": {
+      "enabled": true
+     },
+     "statefulHaConfig": {
+      "enabled": true
+     }
+    },
+    "anonymousAuthenticationConfig": {
+     "mode": "LIMITED"
+    },
+    "autopilot": {
+     "enabled": true
+    },
+    "autoscaling": {
+     "autoprovisioningNodePoolDefaults": {
+      "imageType": "COS_CONTAINERD",
+      "management": {
+       "autoRepair": true,
+       "autoUpgrade": true
+      },
+      "oauthScopes": [
+       "https://www.googleapis.com/auth/devstorage.read_only",
+       "https://www.googleapis.com/auth/logging.write",
+       "https://www.googleapis.com/auth/monitoring",
+       "https://www.googleapis.com/auth/service.management.readonly",
+       "https://www.googleapis.com/auth/servicecontrol",
+       "https://www.googleapis.com/auth/trace.append"
+      ],
+      "serviceAccount": "default",
+      "upgradeSettings": {
+       "maxSurge": 1,
+       "strategy": "SURGE"
+      }
+     },
+     "autoscalingProfile": "OPTIMIZE_UTILIZATION",
+     "enableNodeAutoprovisioning": true,
+     "resourceLimits": [
+      {
+       "maximum": "1000000000",
+       "resourceType": "cpu"
+      },
+      {
+       "maximum": "1000000000",
+       "resourceType": "memory"
+      },
+      {
+       "maximum": "1000000000",
+       "resourceType": "nvidia-tesla-t4"
+      },
+      {
+       "maximum": "1000000000",
+       "resourceType": "nvidia-tesla-a100"
+      }
+     ]
+    },
+    "clusterIpv4Cidr": "10.19.0.0/17",
+    "controlPlaneEgress": {
+     "mode": "VIA_CONTROL_PLANE"
+    },
+    "controlPlaneEndpointsConfig": {
+     "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
+      "endpoint": "gke-6356f7e7e06d49ccb1a5d0a37b3a92136271-123456789012.australia-southeast1.gke.goog"
+     },
+     "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {},
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "10.20.0.2",
+      "publicEndpoint": "34.40.160.87"
+     }
+    },
+    "createTime": "2026-10-27T08:05:57+00:00",
+    "currentMasterVersion": "1.36.4-gke.2046003",
+    "currentNodeVersion": "1.36.4-gke.2046003",
+    "databaseEncryption": {
+     "currentState": "CURRENT_STATE_DECRYPTED",
+     "state": "DECRYPTED"
+    },
+    "defaultMaxPodsConstraint": {
+     "maxPodsPerNode": "110"
+    },
+    "endpoint": "34.40.160.87",
+    "enterpriseConfig": {
+     "clusterTier": "STANDARD"
+    },
+    "initialClusterVersion": "1.36.4-gke.2046003",
+    "instanceGroupUrls": [
+     "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-a/instanceGroupManagers/gk3-shop-gke-nap-13vxev4m-27d3be40-grp",
+     "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-b/instanceGroupManagers/gk3-shop-gke-nap-13vxev4m-ca03826b-grp",
+     "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-c/instanceGroupManagers/gk3-shop-gke-nap-13vxev4m-48c45407-grp"
+    ],
+    "ipAllocationPolicy": {
+     "clusterIpv4Cidr": "10.19.0.0/17",
+     "clusterIpv4CidrBlock": "10.19.0.0/17",
+     "clusterSecondaryRangeName": "gke-shop-gke-pods-6356f7e7",
+     "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+     },
+     "podCidrOverprovisionConfig": {},
+     "servicesIpv4Cidr": "34.118.224.0/20",
+     "servicesIpv4CidrBlock": "34.118.224.0/20",
+     "stackType": "IPV4",
+     "useIpAliases": true
+    },
+    "labelFingerprint": "a9dc16a7",
+    "legacyAbac": {},
+    "location": "australia-southeast1",
+    "locations": [
+     "australia-southeast1-a",
+     "australia-southeast1-b",
+     "australia-southeast1-c"
+    ],
+    "loggingConfig": {
+     "componentConfig": {
+      "enableComponents": [
+       "SYSTEM_COMPONENTS",
+       "WORKLOADS"
+      ]
+     }
+    },
+    "loggingService": "logging.googleapis.com/kubernetes",
+    "maintenancePolicy": {},
+    "masterAuth": {
+     "clientCertificateConfig": {},
+     "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUw1V0p2UlNRUDhKa1dFOTVOOUR3N3d3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa01qZGlOMlEzTVRJdE5ERTJPUzAwWkRKaExXSTVPREF0TURJME1EUXlNREkzTVRJNQpNQ0FYRFRJMk1UQXlOekEzTURVMU9Gb1lEekl3TlRZeE1ERTVNRGd3TlRVNFdqQXZNUzB3S3dZRFZRUURFeVF5Ck4ySTNaRGN4TWkwME1UWTVMVFJrTW1FdFlqazRNQzB3TWpRd05ESXdNamN4TWprd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FETlN5aERteC9CaTRwdmpHM21rMy91VFRhS3hFbTczYnczMDRtegpCWVRkVDdCV1Y3emdnMmtaSkF5L0hOUUtDMS84L0hUNUpEVnVQTSt0TmRNWllnb2dXQktXaDFyYjRxblR4d3lxCkJlOFpEZ0JFRXBROTloVW1qQ2ovWDVwREh0d2gxQ3pKOE9hTTdZcFJwVzNhODVWQ0tKMk9wSjZsN3VZTTFVRUEKVGtKeHNaWDJYSFF4RFRxbVNpeHdWc3RWMExhbm9NR29tQUxaa0NzQ1BoR3UzejRRb1lWK3R4ZFE1VlJsNnM3WApWMVVoQTJwN3ZEUG9YZ3V5Q05PN1cySHFhSzV3UnhPUnE2SFVFL0lqc25HcmQwc2lyOW4venlEOWlHVHBBalBQCmo3MSszVWFpbkpNSzE5RHUxOW40eFlVVU1IUDE2WW14Ky9OWHNWMmdzbGtRVFNJeDNCK3Y3RWViM0RLaG8wSjkKVDYxRm83emhZSlRhNi84NnNaQ2JHSThzV2RZTHlOYUVLRmZ6SVZJWGdOZGtrSE9rU3JxNEF4bU9pN0ZZTEd5Ugp0MGt1Tk9xTXFrcy9MQ2Q3WEc2TDR0dzlDNThtQkExbXord3VNQ1hLL0NqeldsN0YrZ2FKVjRncGJKY0pjTEYyCm04RFBJcHhQSU9NYlpHdVRzaHAwQyt2RDJ4Y0NBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGTlFrZXRXVHY0QVQ1SjRkUENjYW5uTk44UkJaTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQTZpM29heE90bktPSW9pRWJCcUZwOGhGUEZlekVYMXJBb3dpSmFmdVZHCnZKYjFnK09uYm00TGVtbnF1bnBXN0Evc1Q5S1ZxWW51TXVZMDA1Zlo3dzVoY0JSTGlPckFLS2pROWVoa0hTYSsKZ3NaTGFVSmI0elM1Y0NBcXNJcVY5OEJhQ2Z5Mk1vVmV0UzFRLzZXdTZKdGRFdG04VGoxakljcG9paEEvU0I4QwpzN1FOUjhOWklsaXR0TE92SWRvQXpHbUxZK1N0NkpNek5YMkVpckI3WVBTRnJNK3B3WmduRFM3S0tySXBRK1J0CmlyaFp5WDNmOGZIUURFbDhONXNjVkljd1h2ZjJzbFNTZXJXOFQ4UStlQTZEelk2ZFVqUHBTOFV1ZUtqQUplcmMKMERaUHo2aStFdjVwbmFVVG81TzJZQmVOVDFlUktld3AyT1UrV21zVjI5eUlJYlVmL0Q1YTZ2UXBwd0htZWZpQQpYYmhxNjVFdkVkbm5rcWs5MDJ2bkM1Z293cW04dHpBMDVHbWJXT2dqNEo4MFNGNGhYeDQ2K0hOZ2ZWdjUrNk1RCnh4MmJXMy90ZXp4UjVDb29VM00zMFphUlRJSGNuUXZHak9tT0pnUlNNUy9pcTFZYzFiVmhGa29OV0F4RFdXR0MKL2hxSmRQNlM4d2p5S0pWODlTcHFoUWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+    },
+    "masterAuthorizedNetworksConfig": {},
+    "monitoringConfig": {
+     "advancedDatapathObservabilityConfig": {
+      "enableMetrics": true
+     },
+     "componentConfig": {
+      "enableComponents": [
+       "SYSTEM_COMPONENTS",
+       "STORAGE",
+       "HPA",
+       "POD",
+       "DAEMONSET",
+       "DEPLOYMENT",
+       "STATEFULSET",
+       "CADVISOR",
+       "KUBELET",
+       "DCGM",
+       "JOBSET"
+      ]
+     },
+     "managedPrometheusConfig": {
+      "enabled": true
+     }
+    },
+    "monitoringService": "monitoring.googleapis.com/kubernetes",
+    "name": "shop-gke",
+    "network": "shop-vpc",
+    "networkConfig": {
+     "datapathProvider": "ADVANCED_DATAPATH",
+     "dnsConfig": {
+      "clusterDns": "CLOUD_DNS",
+      "clusterDnsDomain": "cluster.local",
+      "clusterDnsScope": "CLUSTER_SCOPE"
+     },
+     "enableIntraNodeVisibility": true,
+     "gatewayApiConfig": {
+      "channel": "CHANNEL_STANDARD"
+     },
+     "network": "projects/acme-shop-prod/global/networks/shop-vpc",
+     "serviceExternalIpsConfig": {},
+     "subnetwork": "projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-gke"
+    },
+    "nodeConfig": {
+     "bootDisk": {
+      "diskType": "pd-balanced",
+      "sizeGb": "100"
+     },
+     "diskSizeGb": 100,
+     "diskType": "pd-balanced",
+     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+     "gcfsConfig": {
+      "enabled": true
+     },
+     "gvnic": {
+      "enabled": true
+     },
+     "imageType": "COS_CONTAINERD",
+     "kubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false,
+      "maxParallelImagePulls": 2
+     },
+     "machineType": "ek-standard-8",
+     "metadata": {
+      "disable-legacy-endpoints": "true"
+     },
+     "nodeImageConfig": {
+      "image": "gke-1364-gke2046003-cos-129-19506-448-20-c-pre",
+      "imageProject": "gke-node-images"
+     },
+     "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+     ],
+     "reservationAffinity": {
+      "consumeReservationType": "NO_RESERVATION"
+     },
+     "resourceLabels": {
+      "goog-gke-node-pool-provisioning-model": "on-demand"
+     },
+     "serviceAccount": "default",
+     "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableSecureBoot": true
+     },
+     "windowsNodeConfig": {},
+     "workloadMetadataConfig": {
+      "mode": "GKE_METADATA"
+     }
+    },
+    "nodeCreationConfig": {
+     "nodeCreationMode": "VIA_KUBELET"
+    },
+    "nodePoolAutoConfig": {
+     "nodeKubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false
+     }
+    },
+    "nodePoolDefaults": {
+     "nodeConfigDefaults": {
+      "gcfsConfig": {
+       "enabled": true
+      },
+      "loggingConfig": {
+       "variantConfig": {
+        "variant": "DEFAULT"
+       }
+      },
+      "nodeKubeletConfig": {
+       "insecureKubeletReadonlyPortEnabled": false
+      }
+     }
+    },
+    "nodePools": [
+     {
+      "autoscaling": {
+       "autoprovisioned": true,
+       "enabled": true,
+       "locationPolicy": "BALANCED",
+       "maxNodeCount": 1000
+      },
+      "config": {
+       "bootDisk": {
+        "diskType": "pd-balanced",
+        "sizeGb": "100"
+       },
+       "diskSizeGb": 100,
+       "diskType": "pd-balanced",
+       "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+       "gcfsConfig": {
+        "enabled": true
+       },
+       "gvnic": {
+        "enabled": true
+       },
+       "imageType": "COS_CONTAINERD",
+       "kubeletConfig": {
+        "insecureKubeletReadonlyPortEnabled": false,
+        "maxParallelImagePulls": 2
+       },
+       "machineType": "ek-standard-8",
+       "metadata": {
+        "disable-legacy-endpoints": "true"
+       },
+       "nodeImageConfig": {
+        "image": "gke-1364-gke2046003-cos-129-19506-448-20-c-pre",
+        "imageProject": "gke-node-images"
+       },
+       "oauthScopes": [
+        "https://www.googleapis.com/auth/devstorage.read_only",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring",
+        "https://www.googleapis.com/auth/service.management.readonly",
+        "https://www.googleapis.com/auth/servicecontrol",
+        "https://www.googleapis.com/auth/trace.append"
+       ],
+       "reservationAffinity": {
+        "consumeReservationType": "NO_RESERVATION"
+       },
+       "resourceLabels": {
+        "goog-gke-node-pool-provisioning-model": "on-demand"
+       },
+       "serviceAccount": "default",
+       "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableSecureBoot": true
+       },
+       "windowsNodeConfig": {},
+       "workloadMetadataConfig": {
+        "mode": "GKE_METADATA"
+       }
+      },
+      "instanceGroupUrls": [
+       "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-a/instanceGroupManagers/gk3-shop-gke-nap-13vxev4m-27d3be40-grp",
+       "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-b/instanceGroupManagers/gk3-shop-gke-nap-13vxev4m-ca03826b-grp",
+       "https://www.googleapis.com/compute/v1/projects/acme-shop-prod/zones/australia-southeast1-c/instanceGroupManagers/gk3-shop-gke-nap-13vxev4m-48c45407-grp"
+      ],
+      "locations": [
+       "australia-southeast1-a",
+       "australia-southeast1-b",
+       "australia-southeast1-c"
+      ],
+      "management": {
+       "autoRepair": true,
+       "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+       "maxPodsPerNode": "64"
+      },
+      "name": "nap-13vxev4m",
+      "networkConfig": {
+       "datapathProvider": "ADVANCED_DATAPATH",
+       "networkTierConfig": {
+        "networkTier": "NETWORK_TIER_DEFAULT"
+       },
+       "podIpv4CidrBlock": "10.19.0.0/17",
+       "podRange": "gke-shop-gke-pods-6356f7e7",
+       "subnetwork": "projects/acme-shop-prod/regions/australia-southeast1/subnetworks/shop-gke"
+      },
+      "placementPolicy": {},
+      "podIpv4CidrSize": 25,
+      "selfLink": "https://container.googleapis.com/v1/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/nodePools/nap-13vxev4m",
+      "status": "RUNNING",
+      "upgradeSettings": {
+       "maxSurge": 1,
+       "strategy": "SURGE"
+      },
+      "version": "1.36.4-gke.2046003"
+     }
+    ],
+    "notificationConfig": {
+     "pubsub": {}
+    },
+    "podAutoscaling": {
+     "hpaProfile": "PERFORMANCE"
+    },
+    "privateClusterConfig": {
+     "privateEndpoint": "10.20.0.2",
+     "publicEndpoint": "34.40.160.87"
+    },
+    "rbacBindingConfig": {
+     "enableInsecureBindingSystemAuthenticated": false,
+     "enableInsecureBindingSystemUnauthenticated": false
+    },
+    "releaseChannel": {
+     "channel": "REGULAR"
+    },
+    "securityPostureConfig": {
+     "mode": "BASIC",
+     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+    },
+    "selfLink": "https://container.googleapis.com/v1/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "shieldedNodes": {
+     "enabled": true
+    },
+    "status": "RECONCILING",
+    "subnetwork": "shop-gke",
+    "userManagedKeysConfig": {},
+    "verticalPodAutoscaling": {
+     "enabled": true
+    },
+    "workloadIdentityConfig": {
+     "workloadPool": "acme-shop-prod.svc.id.goog"
+    },
+    "zone": "australia-southeast1"
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "apps.k8s.io/Deployment",
+  "name": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/k8s/namespaces/kube-system/apps/deployments/antrea-controller",
+  "resource": {
+   "data": {
+    "metadata": {
+     "annotations": {
+      "deployment.kubernetes.io/revision": "1"
+     },
+     "clusterName": "",
+     "generateName": "",
+     "labels": {
+      "addonmanager.kubernetes.io/mode": "EnsureExists",
+      "app": "antrea",
+      "component": "antrea-controller"
+     },
+     "name": "antrea-controller",
+     "namespace": "kube-system",
+     "selfLink": ""
+    },
+    "spec": {
+     "minReadySeconds": 0,
+     "paused": false,
+     "progressDeadlineSeconds": 600,
+     "replicas": 0,
+     "revisionHistoryLimit": 10,
+     "selector": {
+      "matchLabels": {
+       "app": "antrea",
+       "component": "antrea-controller"
+      }
+     },
+     "strategy": {
+      "type": "Recreate"
+     },
+     "template": {
+      "metadata": {
+       "annotations": {
+        "components.gke.io/component-name": "networkpolicy-antrea",
+        "components.gke.io/component-version": "0.7.1",
+        "prometheus.io/port": "10352",
+        "prometheus.io/scrape": "true",
+        "seccomp.security.alpha.kubernetes.io/pod": "runtime/default"
+       },
+       "clusterName": "",
+       "generateName": "",
+       "generation": 0,
+       "labels": {
+        "app": "antrea",
+        "component": "antrea-controller"
+       },
+       "name": "",
+       "namespace": "",
+       "selfLink": ""
+      },
+      "spec": {
+       "containers": [
+        {
+         "args": [
+          "--config",
+          "/etc/antrea/antrea-controller.conf",
+          "--logtostderr=true",
+          "--v=0"
+         ],
+         "command": [
+          "/antrea-controller"
+         ],
+         "env": [
+          {
+           "name": "POD_NAME",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.name"
+            }
+           }
+          },
+          {
+           "name": "POD_NAMESPACE",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            }
+           }
+          },
+          {
+           "name": "NODE_NAME",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "spec.nodeName"
+            }
+           }
+          },
+          {
+           "name": "SERVICEACCOUNT_NAME",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "spec.serviceAccountName"
+            }
+           }
+          }
+         ],
+         "image": "australia-southeast1-artifactregistry.gcr.io/gke-release/gke-release/antrea:v1.4.0-gke.68@sha256:043122a5b431362add3587232c503976eb66187d3903e4920e4abb7ebe027fe3",
+         "imagePullPolicy": "IfNotPresent",
+         "livenessProbe": {
+          "failureThreshold": 5,
+          "handler": {
+           "httpGet": {
+            "host": "",
+            "path": "/livez",
+            "port": "api",
+            "scheme": "HTTPS"
+           }
+          },
+          "initialDelaySeconds": 0,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 5
+         },
+         "name": "antrea-controller",
+         "ports": [
+          {
+           "containerPort": 10349,
+           "hostIP": "",
+           "hostPort": 0,
+           "name": "api",
+           "protocol": "TCP"
+          }
+         ],
+         "readinessProbe": {
+          "failureThreshold": 5,
+          "handler": {
+           "httpGet": {
+            "host": "",
+            "path": "/readyz",
+            "port": "api",
+            "scheme": "HTTPS"
+           }
+          },
+          "initialDelaySeconds": 5,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 5
+         },
+         "resources": {
+          "requests": {
+           "cpu": "200m"
+          }
+         },
+         "securityContext": {
+          "allowPrivilegeEscalation": false,
+          "capabilities": {
+           "drop": [
+            "all"
+           ]
+          },
+          "readOnlyRootFilesystem": true,
+          "runAsGroup": 1000,
+          "runAsUser": 1000
+         },
+         "stdin": false,
+         "stdinOnce": false,
+         "terminationMessagePath": "/dev/termination-log",
+         "terminationMessagePolicy": "File",
+         "tty": false,
+         "volumeMounts": [
+          {
+           "mountPath": "/etc/antrea/antrea-controller.conf",
+           "name": "antrea-config",
+           "readOnly": true,
+           "subPath": "antrea-controller.conf",
+           "subPathExpr": ""
+          },
+          {
+           "mountPath": "/var/run/antrea/antrea-controller-tls",
+           "name": "antrea-controller-tls",
+           "readOnly": false,
+           "subPath": "",
+           "subPathExpr": ""
+          },
+          {
+           "mountPath": "/var/log/antrea",
+           "name": "host-var-log-antrea",
+           "readOnly": false,
+           "subPath": "",
+           "subPathExpr": ""
+          },
+          {
+           "mountPath": "/var/run/antrea",
+           "name": "var-run-antrea",
+           "readOnly": false,
+           "subPath": "",
+           "subPathExpr": ""
+          }
+         ],
+         "workingDir": ""
+        },
+        {
+         "env": [
+          {
+           "name": "GOMAXPROCS",
+           "value": "2"
+          },
+          {
+           "name": "COLLECTOR_CONFIG_PATH",
+           "value": "/conf/networkpolicy-antrea-metrics-collector-config-data.textproto"
+          },
+          {
+           "name": "SPLIT_GAUGE_BUFFER",
+           "value": "true"
+          },
+          {
+           "name": "PROJECT_NUMBER",
+           "value": "123456789012"
+          },
+          {
+           "name": "LOCATION",
+           "value": "australia-southeast1"
+          },
+          {
+           "name": "CLUSTER_NAME",
+           "value": "shop-gke"
+          },
+          {
+           "name": "POD_NAMESPACE",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            }
+           }
+          },
+          {
+           "name": "NODE_NAME",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "spec.nodeName"
+            }
+           }
+          },
+          {
+           "name": "POD_NAME",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.name"
+            }
+           }
+          },
+          {
+           "name": "CONTAINER_NAME",
+           "value": "networkpolicy-antrea-metrics-collector"
+          },
+          {
+           "name": "COMPONENT_VERSION",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.annotations['components.gke.io/component-version']"
+            }
+           }
+          },
+          {
+           "name": "COMPONENT_NAME",
+           "value": "",
+           "valueFrom": {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.annotations['components.gke.io/component-name']"
+            }
+           }
+          },
+          {
+           "name": "TOKEN_SOURCE_MODE",
+           "value": "MODE_TOKEN_BROKER_WITH_FALLBACK"
+          },
+          {
+           "name": "GKE_NODE_SYSTEM_WORKLOAD_CREDENTIALS",
+           "value": "/var/run/token_broker/adc/google-application-credentials.json"
+          },
+          {
+           "name": "GKE_HOSTNAME",
+           "value": "container.googleapis.com"
+          }
+         ],
+         "image": "australia-southeast1-artifactregistry.gcr.io/gke-release/gke-release/gke-metrics-collector:20260408_2300_RC0@sha256:2ed689dcefc423f4a175d3e427346f85b383fbe946caa2bb5441d2dc43c3211e",
+         "imagePullPolicy": "IfNotPresent",
+         "name": "networkpolicy-antrea-metrics-collector",
+         "resources": {
+          "limits": {
+           "cpu": "1",
+           "memory": "30Mi"
+          },
+          "requests": {
+           "cpu": "5m",
+           "memory": "30Mi"
+          }
+         },
+         "securityContext": {
+          "allowPrivilegeEscalation": false,
+          "capabilities": {
+           "drop": [
+            "ALL"
+           ]
+          },
+          "readOnlyRootFilesystem": true,
+          "runAsGroup": 1000,
+          "runAsUser": 1000,
+          "seccompProfile": {
+           "type": "RuntimeDefault"
+          }
+         },
+         "stdin": false,
+         "stdinOnce": false,
+         "terminationMessagePath": "/dev/termination-log",
+         "terminationMessagePolicy": "File",
+         "tty": false,
+         "volumeMounts": [
+          {
+           "mountPath": "/conf",
+           "name": "networkpolicy-antrea-metrics-collector-config-map-vol",
+           "readOnly": false,
+           "subPath": "",
+           "subPathExpr": ""
+          },
+          {
+           "mountPath": "/var/run/token_broker/ksa",
+           "name": "token-broker-ksa",
+           "readOnly": true,
+           "subPath": "",
+           "subPathExpr": ""
+          },
+          {
+           "mountPath": "/var/run/token_broker/adc",
+           "name": "token-broker-adc",
+           "readOnly": true,
+           "subPath": "",
+           "subPathExpr": ""
+          }
+         ],
+         "workingDir": ""
+        }
+       ],
+       "dnsPolicy": "ClusterFirst",
+       "hostIPC": false,
+       "hostNetwork": false,
+       "hostPID": false,
+       "hostname": "",
+       "initContainers": [
+        {
+         "args": [
+          "chown 1000:1000 /var/run/antrea"
+         ],
+         "command": [
+          "/bin/bash",
+          "-c"
+         ],
+         "image": "australia-southeast1-artifactregistry.gcr.io/gke-release/gke-release/gke-distroless/bash:gke_distroless_20260801.00_p0@sha256:6932cae5fba1e02cd6b8e8ed699f32633f9ddff3641d1b6da6b5e952d0fa04ec",
+         "imagePullPolicy": "IfNotPresent",
+         "name": "antrea-self-sign-init",
+         "resources": {},
+         "stdin": false,
+         "stdinOnce": false,
+         "terminationMessagePath": "/dev/termination-log",
+         "terminationMessagePolicy": "File",
+         "tty": false,
+         "volumeMounts": [
+          {
+           "mountPath": "/var/run/antrea",
+           "name": "var-run-antrea",
+           "readOnly": false,
+           "subPath": "",
+           "subPathExpr": ""
+          }
+         ],
+         "workingDir": ""
+        },
+        {
+         "command": [
+          "/node_token_broker_init",
+          "--audience=https://container.googleapis.com/v1/projects/123456789012/locations/australia-southeast1/clusters/shop-gke/generateClusterNodeAgentToken",
+          "--token_url=https://container.googleapis.com/v1/projects/123456789012/locations/australia-southeast1/clusters/shop-gke/generateClusterNodeAgentToken",
+          "--token_file=/var/run/token_broker/ksa/token",
+          "--output_path=/var/run/token_broker/adc/google-application-credentials.json",
+          "--project_id=acme-shop-prod"
+         ],
+         "image": "australia-southeast1-artifactregistry.gcr.io/gke-release/gke-release/node_token_broker/init:gke_node_token_broker_init_20260410.00_p0@sha256:48b18ce5260a479f47611fdff76075e816422c28dce0cab772ba627c508159b4",
+         "imagePullPolicy": "IfNotPresent",
+         "name": "token-broker-adc-init",
+         "resources": {},
+         "stdin": false,
+         "stdinOnce": false,
+         "terminationMessagePath": "/dev/termination-log",
+         "terminationMessagePolicy": "File",
+         "tty": false,
+         "volumeMounts": [
+          {
+           "mountPath": "/var/run/token_broker/adc",
+           "name": "token-broker-adc",
+           "readOnly": false,
+           "subPath": "",
+           "subPathExpr": ""
+          }
+         ],
+         "workingDir": ""
+        }
+       ],
+       "nodeName": "",
+       "nodeSelector": {
+        "kubernetes.io/os": "linux"
+       },
+       "priorityClassName": "system-cluster-critical",
+       "restartPolicy": "Always",
+       "schedulerName": "default-scheduler",
+       "securityContext": {
+        "seccompProfile": {
+         "type": "RuntimeDefault"
+        }
+       },
+       "serviceAccount": "antrea-controller",
+       "serviceAccountName": "antrea-controller",
+       "subdomain": "",
+       "terminationGracePeriodSeconds": 30,
+       "tolerations": [
+        {
+         "effect": "",
+         "key": "CriticalAddonsOnly",
+         "operator": "Exists",
+         "value": ""
+        },
+        {
+         "effect": "NoSchedule",
+         "key": "node-role.kubernetes.io/master",
+         "operator": "",
+         "value": ""
+        },
+        {
+         "effect": "",
+         "key": "components.gke.io/gke-managed-components",
+         "operator": "Exists",
+         "value": ""
+        }
+       ],
+       "volumes": [
+        {
+         "name": "var-run-antrea",
+         "volumeSource": {
+          "emptyDir": {
+           "medium": ""
+          }
+         }
+        },
+        {
+         "name": "antrea-config",
+         "volumeSource": {
+          "configMap": {
+           "defaultMode": 420,
+           "localObjectReference": {
+            "name": "antrea-config"
+           }
+          }
+         }
+        },
+        {
+         "name": "antrea-controller-tls",
+         "volumeSource": {
+          "secret": {
+           "defaultMode": 256,
+           "optional": true,
+           "secretName": "antrea-controller-tls"
+          }
+         }
+        },
+        {
+         "name": "host-var-log-antrea",
+         "volumeSource": {
+          "emptyDir": {
+           "medium": ""
+          }
+         }
+        },
+        {
+         "name": "networkpolicy-antrea-metrics-collector-config-map-vol",
+         "volumeSource": {
+          "configMap": {
+           "defaultMode": 420,
+           "items": [
+            {
+             "key": "networkpolicy-antrea-metrics-collector-config-data",
+             "path": "networkpolicy-antrea-metrics-collector-config-data.textproto"
+            }
+           ],
+           "localObjectReference": {
+            "name": "networkpolicy-antrea-metrics-collector-config-map"
+           }
+          }
+         }
+        },
+        {
+         "name": "token-broker-ksa",
+         "volumeSource": {
+          "projected": {
+           "defaultMode": 420,
+           "sources": [
+            {
+             "serviceAccountToken": {
+              "audience": "https://container.googleapis.com/v1/projects/123456789012/locations/australia-southeast1/clusters/shop-gke/generateClusterNodeAgentToken",
+              "expirationSeconds": 3600,
+              "path": "token"
+             }
+            }
+           ]
+          }
+         }
+        },
+        {
+         "name": "token-broker-adc",
+         "volumeSource": {
+          "emptyDir": {
+           "medium": ""
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   "location": "australia-southeast1",
+   "parent": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/k8s/namespaces/kube-system"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "apps.k8s.io/Deployment",
+  "name": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/k8s/namespaces/shop/apps/deployments/recommendations",
+  "resource": {
+   "data": {
+    "metadata": {
+     "annotations": {
+      "autopilot.gke.io/resource-adjustment": "{\"input\":{\"containers\":[{\"requests\":{\"cpu\":\"250m\",\"memory\":\"512Mi\"},\"name\":\"app\"}]},\"output\":{\"containers\":[{\"limits\":{\"ephemeral-storage\":\"1Gi\"},\"requests\":{\"cpu\":\"250m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"name\":\"app\"}]},\"computeClassAtAdmission\":\"Default\",\"modified\":true}",
+      "autopilot.gke.io/warden-version": "36.24.2-gke.1",
+      "deployment.kubernetes.io/revision": "1"
+     },
+     "clusterName": "",
+     "generateName": "",
+     "labels": {
+      "app": "shop",
+      "component": "recommendations"
+     },
+     "name": "recommendations",
+     "namespace": "shop",
+     "selfLink": ""
+    },
+    "spec": {
+     "minReadySeconds": 0,
+     "paused": false,
+     "progressDeadlineSeconds": 600,
+     "replicas": 2,
+     "revisionHistoryLimit": 10,
+     "selector": {
+      "matchLabels": {
+       "component": "recommendations"
+      }
+     },
+     "strategy": {
+      "rollingUpdate": {
+       "maxSurge": "25%",
+       "maxUnavailable": "25%"
+      },
+      "type": "RollingUpdate"
+     },
+     "template": {
+      "metadata": {
+       "clusterName": "",
+       "generateName": "",
+       "generation": 0,
+       "labels": {
+        "app": "shop",
+        "component": "recommendations"
+       },
+       "name": "",
+       "namespace": "",
+       "selfLink": ""
+      },
+      "spec": {
+       "containers": [
+        {
+         "env": [
+          {
+           "name": "REDIS_HOST",
+           "value": "10.102.159.155"
+          },
+          {
+           "name": "ORDERS_TOPIC",
+           "value": "projects/acme-shop-prod/topics/orders"
+          }
+         ],
+         "image": "us-docker.pkg.dev/cloudrun/container/hello",
+         "imagePullPolicy": "Always",
+         "name": "app",
+         "resources": {
+          "limits": {
+           "ephemeral-storage": "1Gi"
+          },
+          "requests": {
+           "cpu": "250m",
+           "ephemeral-storage": "1Gi",
+           "memory": "512Mi"
+          }
+         },
+         "securityContext": {
+          "capabilities": {
+           "drop": [
+            "NET_RAW"
+           ]
+          }
+         },
+         "stdin": false,
+         "stdinOnce": false,
+         "terminationMessagePath": "/dev/termination-log",
+         "terminationMessagePolicy": "File",
+         "tty": false,
+         "workingDir": ""
+        }
+       ],
+       "dnsPolicy": "ClusterFirst",
+       "hostIPC": false,
+       "hostNetwork": false,
+       "hostPID": false,
+       "hostname": "",
+       "nodeName": "",
+       "priorityClassName": "",
+       "restartPolicy": "Always",
+       "schedulerName": "default-scheduler",
+       "securityContext": {
+        "seccompProfile": {
+         "type": "RuntimeDefault"
+        }
+       },
+       "serviceAccount": "",
+       "serviceAccountName": "",
+       "subdomain": "",
+       "terminationGracePeriodSeconds": 30,
+       "tolerations": [
+        {
+         "effect": "NoSchedule",
+         "key": "kubernetes.io/arch",
+         "operator": "Equal",
+         "value": "amd64"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "location": "australia-southeast1",
+   "parent": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/k8s/namespaces/shop"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "rbac.authorization.k8s.io/ClusterRole",
+  "name": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/k8s/rbac.authorization.k8s.io/clusterroles/admin",
+  "resource": {
+   "data": {
+    "aggregationRule": {
+     "clusterRoleSelectors": [
+      {
+       "matchLabels": {
+        "rbac.authorization.k8s.io/aggregate-to-admin": "true"
+       }
+      }
+     ]
+    },
+    "metadata": {
+     "annotations": {
+      "rbac.authorization.kubernetes.io/autoupdate": "true"
+     },
+     "clusterName": "",
+     "generateName": "",
+     "labels": {
+      "kubernetes.io/bootstrapping": "rbac-defaults"
+     },
+     "name": "admin",
+     "namespace": "",
+     "selfLink": ""
+    },
+    "rules": [
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "pods/attach",
+       "pods/exec",
+       "pods/portforward",
+       "pods/proxy",
+       "secrets",
+       "services/proxy"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "serviceaccounts"
+      ],
+      "verbs": [
+       "impersonate"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "pods",
+       "pods/attach",
+       "pods/exec",
+       "pods/portforward",
+       "pods/proxy"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "pods/eviction"
+      ],
+      "verbs": [
+       "create"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "configmaps",
+       "persistentvolumeclaims",
+       "replicationcontrollers",
+       "replicationcontrollers/scale",
+       "secrets",
+       "serviceaccounts",
+       "services",
+       "services/proxy"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "serviceaccounts/token"
+      ],
+      "verbs": [
+       "create"
+      ]
+     },
+     {
+      "apiGroups": [
+       "",
+       "events.k8s.io"
+      ],
+      "resources": [
+       "events"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       "apps"
+      ],
+      "resources": [
+       "daemonsets",
+       "deployments",
+       "deployments/rollback",
+       "deployments/scale",
+       "replicasets",
+       "replicasets/scale",
+       "statefulsets",
+       "statefulsets/scale"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       "autoscaling"
+      ],
+      "resources": [
+       "horizontalpodautoscalers"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       "batch"
+      ],
+      "resources": [
+       "cronjobs",
+       "jobs"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       "extensions"
+      ],
+      "resources": [
+       "daemonsets",
+       "deployments",
+       "deployments/rollback",
+       "deployments/scale",
+       "ingresses",
+       "networkpolicies",
+       "replicasets",
+       "replicasets/scale",
+       "replicationcontrollers/scale"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       "policy"
+      ],
+      "resources": [
+       "poddisruptionbudgets"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       "networking.k8s.io"
+      ],
+      "resources": [
+       "ingresses",
+       "networkpolicies"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       "coordination.k8s.io"
+      ],
+      "resources": [
+       "leases"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "get",
+       "list",
+       "patch",
+       "update",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "resource.k8s.io"
+      ],
+      "resources": [
+       "resourceclaims",
+       "resourceclaimtemplates"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "patch",
+       "update"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "configmaps",
+       "endpoints",
+       "persistentvolumeclaims",
+       "persistentvolumeclaims/status",
+       "pods",
+       "replicationcontrollers",
+       "replicationcontrollers/scale",
+       "serviceaccounts",
+       "services",
+       "services/status"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "bindings",
+       "limitranges",
+       "namespaces/status",
+       "pods/log",
+       "pods/status",
+       "replicationcontrollers/status",
+       "resourcequotas",
+       "resourcequotas/status"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       ""
+      ],
+      "resources": [
+       "namespaces"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "",
+       "events.k8s.io"
+      ],
+      "resources": [
+       "events"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "discovery.k8s.io"
+      ],
+      "resources": [
+       "endpointslices"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "apps"
+      ],
+      "resources": [
+       "controllerrevisions",
+       "daemonsets",
+       "daemonsets/status",
+       "deployments",
+       "deployments/scale",
+       "deployments/status",
+       "replicasets",
+       "replicasets/scale",
+       "replicasets/status",
+       "statefulsets",
+       "statefulsets/scale",
+       "statefulsets/status"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "autoscaling"
+      ],
+      "resources": [
+       "horizontalpodautoscalers",
+       "horizontalpodautoscalers/status"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "batch"
+      ],
+      "resources": [
+       "cronjobs",
+       "cronjobs/status",
+       "jobs",
+       "jobs/status"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "extensions"
+      ],
+      "resources": [
+       "daemonsets",
+       "daemonsets/status",
+       "deployments",
+       "deployments/scale",
+       "deployments/status",
+       "ingresses",
+       "ingresses/status",
+       "networkpolicies",
+       "replicasets",
+       "replicasets/scale",
+       "replicasets/status",
+       "replicationcontrollers/scale"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "policy"
+      ],
+      "resources": [
+       "poddisruptionbudgets",
+       "poddisruptionbudgets/status"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "networking.k8s.io"
+      ],
+      "resources": [
+       "ingresses",
+       "ingresses/status",
+       "networkpolicies"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "resource.k8s.io"
+      ],
+      "resources": [
+       "resourceclaims",
+       "resourceclaims/status",
+       "resourceclaimtemplates"
+      ],
+      "verbs": [
+       "get",
+       "list",
+       "watch"
+      ]
+     },
+     {
+      "apiGroups": [
+       "authorization.k8s.io"
+      ],
+      "resources": [
+       "localsubjectaccessreviews"
+      ],
+      "verbs": [
+       "create"
+      ]
+     },
+     {
+      "apiGroups": [
+       "rbac.authorization.k8s.io"
+      ],
+      "resources": [
+       "rolebindings",
+       "roles"
+      ],
+      "verbs": [
+       "create",
+       "delete",
+       "deletecollection",
+       "get",
+       "list",
+       "patch",
+       "update",
+       "watch"
+      ]
+     }
+    ]
+   },
+   "location": "australia-southeast1",
+   "parent": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "batch.k8s.io/CronJob",
+  "name": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/k8s/namespaces/shop/batch/cronjobs/catalog-sync",
+  "resource": {
+   "data": {
+    "metadata": {
+     "annotations": {
+      "autopilot.gke.io/resource-adjustment": "{\"input\":{\"containers\":[{\"requests\":{\"cpu\":\"250m\",\"memory\":\"512Mi\"},\"name\":\"sync\"}]},\"output\":{\"containers\":[{\"limits\":{\"ephemeral-storage\":\"1Gi\"},\"requests\":{\"cpu\":\"250m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"name\":\"sync\"}]},\"computeClassAtAdmission\":\"Default\",\"modified\":true}",
+      "autopilot.gke.io/warden-version": "36.24.2-gke.1"
+     },
+     "clusterName": "",
+     "generateName": "",
+     "labels": {
+      "app": "shop"
+     },
+     "name": "catalog-sync",
+     "namespace": "shop",
+     "selfLink": ""
+    },
+    "spec": {
+     "concurrencyPolicy": "Allow",
+     "failedJobsHistoryLimit": 1,
+     "jobTemplate": {
+      "metadata": {
+       "clusterName": "",
+       "generateName": "",
+       "generation": 0,
+       "name": "",
+       "namespace": "",
+       "selfLink": ""
+      },
+      "spec": {
+       "template": {
+        "metadata": {
+         "clusterName": "",
+         "generateName": "",
+         "generation": 0,
+         "name": "",
+         "namespace": "",
+         "selfLink": ""
+        },
+        "spec": {
+         "containers": [
+          {
+           "image": "us-docker.pkg.dev/cloudrun/container/hello",
+           "imagePullPolicy": "Always",
+           "name": "sync",
+           "resources": {
+            "limits": {
+             "ephemeral-storage": "1Gi"
+            },
+            "requests": {
+             "cpu": "250m",
+             "ephemeral-storage": "1Gi",
+             "memory": "512Mi"
+            }
+           },
+           "securityContext": {
+            "capabilities": {
+             "drop": [
+              "NET_RAW"
+             ]
+            }
+           },
+           "stdin": false,
+           "stdinOnce": false,
+           "terminationMessagePath": "/dev/termination-log",
+           "terminationMessagePolicy": "File",
+           "tty": false,
+           "workingDir": ""
+          }
+         ],
+         "dnsPolicy": "ClusterFirst",
+         "hostIPC": false,
+         "hostNetwork": false,
+         "hostPID": false,
+         "hostname": "",
+         "nodeName": "",
+         "priorityClassName": "",
+         "restartPolicy": "Never",
+         "schedulerName": "default-scheduler",
+         "securityContext": {
+          "seccompProfile": {
+           "type": "RuntimeDefault"
+          }
+         },
+         "serviceAccount": "",
+         "serviceAccountName": "",
+         "subdomain": "",
+         "terminationGracePeriodSeconds": 30,
+         "tolerations": [
+          {
+           "effect": "NoSchedule",
+           "key": "kubernetes.io/arch",
+           "operator": "Equal",
+           "value": "amd64"
+          }
+         ]
+        }
+       }
+      }
+     },
+     "schedule": "0 3 * * *",
+     "successfulJobsHistoryLimit": 3,
+     "suspend": false
+    }
+   },
+   "location": "australia-southeast1",
+   "parent": "//container.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/clusters/shop-gke/k8s/namespaces/shop"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "pubsub.googleapis.com/Subscription",
+  "name": "//pubsub.googleapis.com/projects/acme-shop-prod/subscriptions/orders-to-payments",
+  "resource": {
+   "data": {
+    "ackDeadlineSeconds": 10,
+    "deadLetterPolicy": {
+     "deadLetterTopic": "projects/acme-shop-prod/topics/orders-dlq",
+     "maxDeliveryAttempts": 5
+    },
+    "expirationPolicy": {
+     "ttl": "2678400s"
+    },
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "messageRetentionDuration": "604800s",
+    "name": "projects/acme-shop-prod/subscriptions/orders-to-payments",
+    "pushConfig": {
+     "attributes": {
+      "x-goog-version": "v1"
+     },
+     "pushEndpoint": "https://payments-worker-abcd1234ef-ts.a.run.app/pubsub"
+    },
+    "topic": "projects/acme-shop-prod/topics/orders"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "pubsub.googleapis.com/Topic",
+  "name": "//pubsub.googleapis.com/projects/acme-shop-prod/topics/orders",
+  "resource": {
+   "data": {
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "name": "projects/acme-shop-prod/topics/orders"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "pubsub.googleapis.com/Topic",
+  "name": "//pubsub.googleapis.com/projects/acme-shop-prod/topics/orders-dlq",
+  "resource": {
+   "data": {
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "name": "projects/acme-shop-prod/topics/orders-dlq"
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "redis.googleapis.com/Instance",
+  "name": "//redis.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/instances/shop-cache",
+  "resource": {
+   "data": {
+    "authorizedNetwork": "projects/acme-shop-prod/global/networks/shop-vpc",
+    "connectMode": "DIRECT_PEERING",
+    "createTime": "2026-10-27T08:04:23.477045223Z",
+    "currentLocationId": "australia-southeast1-a",
+    "host": "10.102.159.155",
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "locationId": "australia-southeast1-a",
+    "maintenanceVersion": "20260916_03_01",
+    "memorySizeGb": 1,
+    "name": "projects/acme-shop-prod/locations/australia-southeast1/instances/shop-cache",
+    "nodes": [
+     {
+      "zone": "australia-southeast1-a"
+     }
+    ],
+    "persistenceConfig": {
+     "persistenceMode": "DISABLED"
+    },
+    "persistenceIamIdentity": "serviceAccount:service-123456789012@cloud-redis.iam.gserviceaccount.com",
+    "port": 6379,
+    "readReplicasMode": "READ_REPLICAS_DISABLED",
+    "redisVersion": "REDIS_7_0",
+    "reservedIpRange": "10.102.159.152/29",
+    "state": "READY",
+    "tier": "BASIC",
+    "transitEncryptionMode": "DISABLED"
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "run.googleapis.com/Service",
+  "name": "//run.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/services/orders-api",
+  "resource": {
+   "data": {
+    "apiVersion": "serving.knative.dev/v1",
+    "kind": "Service",
+    "metadata": {
+     "annotations": {
+      "run.googleapis.com/ingress": "internal-and-cloud-load-balancing",
+      "run.googleapis.com/ingress-status": "internal-and-cloud-load-balancing",
+      "run.googleapis.com/maxScale": "3",
+      "run.googleapis.com/operation-id": "68f9d4a0-fe7d-44e6-9b50-9d30e34b2309",
+      "run.googleapis.com/urls": "[\"https://orders-api-123456789012.australia-southeast1.run.app\",\"https://orders-api-abcd1234ef-ts.a.run.app\"]",
+      "serving.knative.dev/creator": "deployer@example.com",
+      "serving.knative.dev/lastModifier": "deployer@example.com"
+     },
+     "generation": 1,
+     "labels": {
+      "app": "shop",
+      "cloud.googleapis.com/location": "australia-southeast1",
+      "purpose": "archdiag-test",
+      "run.googleapis.com/satisfiesPzs": "true"
+     },
+     "name": "orders-api",
+     "namespace": "123456789012",
+     "selfLink": "/apis/serving.knative.dev/v1/namespaces/123456789012/services/orders-api"
+    },
+    "spec": {
+     "template": {
+      "metadata": {
+       "annotations": {
+        "autoscaling.knative.dev/maxScale": "3",
+        "run.googleapis.com/cloudsql-instances": "acme-shop-prod:australia-southeast1:shop-db",
+        "run.googleapis.com/network-interfaces": "[{\"network\":\"shop-vpc\",\"subnetwork\":\"shop-app\"}]",
+        "run.googleapis.com/vpc-access-egress": "private-ranges-only"
+       },
+       "labels": {
+        "run.googleapis.com/startupProbeType": "Default"
+       }
+      },
+      "spec": {
+       "containerConcurrency": 80,
+       "containers": [
+        {
+         "env": [
+          {
+           "name": "ORDERS_TOPIC",
+           "value": "projects/acme-shop-prod/topics/orders"
+          },
+          {
+           "name": "DB_PASSWORD",
+           "valueFrom": {
+            "secretKeyRef": {
+             "key": "latest",
+             "name": "db-password"
+            }
+           }
+          }
+         ],
+         "image": "us-docker.pkg.dev/cloudrun/container/hello",
+         "ports": [
+          {
+           "containerPort": 8080,
+           "name": "http1"
+          }
+         ],
+         "resources": {
+          "limits": {
+           "cpu": "1000m",
+           "memory": "512Mi"
+          }
+         },
+         "startupProbe": {
+          "failureThreshold": 1,
+          "periodSeconds": 240,
+          "tcpSocket": {
+           "port": 8080
+          },
+          "timeoutSeconds": 240
+         }
+        }
+       ],
+       "serviceAccountName": "shop-run@acme-shop-prod.iam.gserviceaccount.com",
+       "timeoutSeconds": 300
+      }
+     },
+     "traffic": [
+      {
+       "latestRevision": true,
+       "percent": 100
+      }
+     ]
+    },
+    "status": {
+     "address": {
+      "url": "https://orders-api-abcd1234ef-ts.a.run.app"
+     },
+     "latestCreatedRevisionName": "orders-api-00001-9b2",
+     "latestReadyRevisionName": "orders-api-00001-9b2",
+     "traffic": [
+      {
+       "latestRevision": true,
+       "percent": 100,
+       "revisionName": "orders-api-00001-9b2"
+      }
+     ],
+     "url": "https://orders-api-abcd1234ef-ts.a.run.app"
+    }
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "run.googleapis.com/Service",
+  "name": "//run.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/services/payments-worker",
+  "resource": {
+   "data": {
+    "apiVersion": "serving.knative.dev/v1",
+    "kind": "Service",
+    "metadata": {
+     "annotations": {
+      "run.googleapis.com/ingress": "internal",
+      "run.googleapis.com/ingress-status": "internal",
+      "run.googleapis.com/maxScale": "3",
+      "run.googleapis.com/operation-id": "7042fcca-c6f9-4824-a412-3775ebfbdeb7",
+      "run.googleapis.com/urls": "[\"https://payments-worker-123456789012.australia-southeast1.run.app\",\"https://payments-worker-abcd1234ef-ts.a.run.app\"]",
+      "serving.knative.dev/creator": "deployer@example.com",
+      "serving.knative.dev/lastModifier": "deployer@example.com"
+     },
+     "generation": 1,
+     "labels": {
+      "app": "shop",
+      "cloud.googleapis.com/location": "australia-southeast1",
+      "purpose": "archdiag-test",
+      "run.googleapis.com/satisfiesPzs": "true"
+     },
+     "name": "payments-worker",
+     "namespace": "123456789012",
+     "selfLink": "/apis/serving.knative.dev/v1/namespaces/123456789012/services/payments-worker"
+    },
+    "spec": {
+     "template": {
+      "metadata": {
+       "annotations": {
+        "autoscaling.knative.dev/maxScale": "3",
+        "run.googleapis.com/vpc-access-connector": "projects/acme-shop-prod/locations/australia-southeast1/connectors/shop-conn",
+        "run.googleapis.com/vpc-access-egress": "all-traffic"
+       },
+       "labels": {
+        "run.googleapis.com/startupProbeType": "Default"
+       }
+      },
+      "spec": {
+       "containerConcurrency": 80,
+       "containers": [
+        {
+         "image": "us-docker.pkg.dev/cloudrun/container/hello",
+         "ports": [
+          {
+           "containerPort": 8080,
+           "name": "http1"
+          }
+         ],
+         "resources": {
+          "limits": {
+           "cpu": "1000m",
+           "memory": "512Mi"
+          }
+         },
+         "startupProbe": {
+          "failureThreshold": 1,
+          "periodSeconds": 240,
+          "tcpSocket": {
+           "port": 8080
+          },
+          "timeoutSeconds": 240
+         }
+        }
+       ],
+       "serviceAccountName": "shop-run@acme-shop-prod.iam.gserviceaccount.com",
+       "timeoutSeconds": 300
+      }
+     },
+     "traffic": [
+      {
+       "latestRevision": true,
+       "percent": 100
+      }
+     ]
+    },
+    "status": {
+     "address": {
+      "url": "https://payments-worker-abcd1234ef-ts.a.run.app"
+     },
+     "latestCreatedRevisionName": "payments-worker-00001-nsr",
+     "latestReadyRevisionName": "payments-worker-00001-nsr",
+     "traffic": [
+      {
+       "latestRevision": true,
+       "percent": 100,
+       "revisionName": "payments-worker-00001-nsr"
+      }
+     ],
+     "url": "https://payments-worker-abcd1234ef-ts.a.run.app"
+    }
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "run.googleapis.com/Service",
+  "name": "//run.googleapis.com/projects/acme-shop-prod/locations/australia-southeast1/services/shop-web",
+  "resource": {
+   "data": {
+    "apiVersion": "serving.knative.dev/v1",
+    "kind": "Service",
+    "metadata": {
+     "annotations": {
+      "run.googleapis.com/ingress": "internal-and-cloud-load-balancing",
+      "run.googleapis.com/ingress-status": "internal-and-cloud-load-balancing",
+      "run.googleapis.com/maxScale": "3",
+      "run.googleapis.com/operation-id": "94ef89f0-8be1-406a-86ed-ab9a488f6e85",
+      "run.googleapis.com/urls": "[\"https://shop-web-123456789012.australia-southeast1.run.app\",\"https://shop-web-abcd1234ef-ts.a.run.app\"]",
+      "serving.knative.dev/creator": "deployer@example.com",
+      "serving.knative.dev/lastModifier": "deployer@example.com"
+     },
+     "generation": 1,
+     "labels": {
+      "app": "shop",
+      "cloud.googleapis.com/location": "australia-southeast1",
+      "purpose": "archdiag-test",
+      "run.googleapis.com/satisfiesPzs": "true"
+     },
+     "name": "shop-web",
+     "namespace": "123456789012",
+     "selfLink": "/apis/serving.knative.dev/v1/namespaces/123456789012/services/shop-web"
+    },
+    "spec": {
+     "template": {
+      "metadata": {
+       "annotations": {
+        "autoscaling.knative.dev/maxScale": "3"
+       },
+       "labels": {
+        "run.googleapis.com/startupProbeType": "Default"
+       }
+      },
+      "spec": {
+       "containerConcurrency": 80,
+       "containers": [
+        {
+         "env": [
+          {
+           "name": "ORDERS_API_URL",
+           "value": "https://orders-api-abcd1234ef-ts.a.run.app"
+          }
+         ],
+         "image": "us-docker.pkg.dev/cloudrun/container/hello",
+         "ports": [
+          {
+           "containerPort": 8080,
+           "name": "http1"
+          }
+         ],
+         "resources": {
+          "limits": {
+           "cpu": "1000m",
+           "memory": "512Mi"
+          }
+         },
+         "startupProbe": {
+          "failureThreshold": 1,
+          "periodSeconds": 240,
+          "tcpSocket": {
+           "port": 8080
+          },
+          "timeoutSeconds": 240
+         }
+        }
+       ],
+       "serviceAccountName": "shop-run@acme-shop-prod.iam.gserviceaccount.com",
+       "timeoutSeconds": 300
+      }
+     },
+     "traffic": [
+      {
+       "latestRevision": true,
+       "percent": 100
+      }
+     ]
+    },
+    "status": {
+     "address": {
+      "url": "https://shop-web-abcd1234ef-ts.a.run.app"
+     },
+     "latestCreatedRevisionName": "shop-web-00001-4cn",
+     "latestReadyRevisionName": "shop-web-00001-4cn",
+     "traffic": [
+      {
+       "latestRevision": true,
+       "percent": 100,
+       "revisionName": "shop-web-00001-4cn"
+      }
+     ],
+     "url": "https://shop-web-abcd1234ef-ts.a.run.app"
+    }
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "secretmanager.googleapis.com/Secret",
+  "name": "//secretmanager.googleapis.com/projects/123456789012/secrets/db-password",
+  "resource": {
+   "data": {
+    "createTime": "2026-10-27T08:04:58.747881Z",
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "name": "projects/123456789012/secrets/db-password",
+    "replication": {
+     "automatic": {}
+    }
+   },
+   "location": "global",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "secretmanager.googleapis.com/SecretVersion",
+  "name": "//secretmanager.googleapis.com/projects/123456789012/secrets/archdiag-test-tokens/versions/1",
+  "resource": {
+   "data": {
+    "clientSpecifiedPayloadChecksum": true,
+    "createTime": "2026-10-27T07:07:06.633854Z",
+    "name": "projects/123456789012/secrets/archdiag-test-tokens/versions/1",
+    "replicationStatus": {
+     "automatic": {}
+    },
+    "state": "ENABLED"
+   },
+   "location": "global",
+   "parent": "//secretmanager.googleapis.com/projects/123456789012/secrets/archdiag-test-tokens"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "secretmanager.googleapis.com/SecretVersion",
+  "name": "//secretmanager.googleapis.com/projects/123456789012/secrets/db-password/versions/1",
+  "resource": {
+   "data": {
+    "clientSpecifiedPayloadChecksum": true,
+    "createTime": "2026-10-27T08:05:02.44835Z",
+    "name": "projects/123456789012/secrets/db-password/versions/1",
+    "replicationStatus": {
+     "automatic": {}
+    },
+    "state": "ENABLED"
+   },
+   "location": "global",
+   "parent": "//secretmanager.googleapis.com/projects/123456789012/secrets/db-password"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "storage.googleapis.com/Bucket",
+  "name": "//storage.googleapis.com/shop-assets-acme",
+  "resource": {
+   "data": {
+    "acl": [],
+    "autoclass": {},
+    "billing": {},
+    "cors": [],
+    "customPlacementConfig": {},
+    "defaultObjectAcl": [],
+    "encryption": {
+     "customerManagedEncryptionEnforcementConfig": {},
+     "customerSuppliedEncryptionEnforcementConfig": {},
+     "googleManagedEncryptionEnforcementConfig": {}
+    },
+    "hierarchicalNamespace": {},
+    "iamConfiguration": {
+     "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2027-01-25T08:05:18.197Z"
+     },
+     "publicAccessPrevention": "enforced",
+     "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2027-01-25T08:05:18.197Z"
+     }
+    },
+    "ipFilter": {
+     "publicNetworkSource": {},
+     "vpcNetworkSources": []
+    },
+    "kind": "storage#bucket",
+    "labels": {
+     "app": "shop",
+     "purpose": "archdiag-test"
+    },
+    "lifecycle": {
+     "rule": []
+    },
+    "location": "AUSTRALIA-SOUTHEAST1",
+    "locationType": "region",
+    "logging": {},
+    "metageneration": 2,
+    "name": "shop-assets-acme",
+    "objectRetention": {},
+    "owner": {},
+    "projectNumber": 123456789012,
+    "retentionPolicy": {},
+    "satisfiesPZS": true,
+    "selfLink": "https://www.googleapis.com/storage/v1/b/shop-assets-acme",
+    "softDeletePolicy": {
+     "effectiveTime": "2026-10-27T08:05:18.000Z",
+     "hardDeletePause": {},
+     "retentionDurationSeconds": 604800
+    },
+    "storageClass": "STANDARD",
+    "timeCreated": "2026-10-27T08:05:18.197Z",
+    "updated": "2026-10-27T08:05:23.835Z",
+    "versioning": {},
+    "website": {}
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ },
+ {
+  "ancestors": [
+   "projects/123456789012",
+   "organizations/000000000000"
+  ],
+  "assetType": "vpcaccess.googleapis.com/Connector",
+  "name": "//vpcaccess.googleapis.com/projects/123456789012/locations/australia-southeast1/connectors/shop-conn",
+  "resource": {
+   "data": {
+    "ipCidrRange": "10.8.0.0/28",
+    "machineType": "e2-micro",
+    "maxInstances": 3,
+    "maxThroughput": 300,
+    "minInstances": 2,
+    "minThroughput": 200,
+    "name": "projects/acme-shop-prod/locations/australia-southeast1/connectors/shop-conn",
+    "network": "shop-vpc",
+    "state": "CREATING"
+   },
+   "location": "australia-southeast1",
+   "parent": "//cloudresourcemanager.googleapis.com/projects/123456789012"
+  }
+ }
+]
