@@ -5,6 +5,32 @@
 Kubernetes, on-prem and SaaS services such as PostgreSQL, Redis, Kafka and Nginx. Diagrams render
 through Graphviz to PNG, self-contained SVG, PDF or JPG.
 
+## Samples
+
+These are the bundled templates and the Terraform example, rendered exactly as the server produces them.
+The score is from `review_architecture`. Click a diagram for the full-size image.
+
+<table>
+<tr>
+<td width="50%"><a href="docs/samples/azure_webapp_hub_spoke.png"><img src="docs/samples/azure_webapp_hub_spoke.png" alt="Azure web app, hub-spoke"></a><br><b>Azure web app, hub-spoke with warm DR</b><br><code>azure_webapp_hub_spoke</code>, review 94 (A)</td>
+<td width="50%"><a href="docs/samples/azure_aks_microservices.png"><img src="docs/samples/azure_aks_microservices.png" alt="Azure AKS microservices"></a><br><b>Azure AKS microservices</b><br><code>azure_aks_microservices</code>, review 97 (A)</td>
+</tr>
+<tr>
+<td><a href="docs/samples/aws_three_tier.png"><img src="docs/samples/aws_three_tier.png" alt="AWS three-tier"></a><br><b>AWS three-tier web app</b><br><code>aws_three_tier</code>, review 86 (B)</td>
+<td><a href="docs/samples/aws_serverless_event_driven.png"><img src="docs/samples/aws_serverless_event_driven.png" alt="AWS serverless event-driven"></a><br><b>AWS serverless, event-driven</b><br><code>aws_serverless_event_driven</code>, review 100 (A)</td>
+</tr>
+<tr>
+<td><a href="docs/samples/gcp_gke_microservices.png"><img src="docs/samples/gcp_gke_microservices.png" alt="GCP GKE microservices"></a><br><b>GCP GKE microservices</b><br><code>gcp_gke_microservices</code>, review 97 (A)</td>
+<td><a href="docs/samples/gcp_serverless_data.png"><img src="docs/samples/gcp_serverless_data.png" alt="GCP serverless and data"></a><br><b>GCP serverless and data platform</b><br><code>gcp_serverless_data</code>, review 81 (B)</td>
+</tr>
+<tr>
+<td><a href="docs/samples/terraform_aws_plan.png"><img src="docs/samples/terraform_aws_plan.png" alt="Diagram imported from a Terraform plan"></a><br><b>Imported from Terraform</b><br><code>diagram_from_terraform</code> on <a href="examples/aws_plan.json">examples/aws_plan.json</a>, review 73 (C)</td>
+<td></td>
+</tr>
+</table>
+
+To regenerate them, run `python scripts/render_samples.py`.
+
 ## Tools
 
 | Tool | What it does |
@@ -222,6 +248,8 @@ src/arch_diagram_mcp/
   storage.py       local signed links, S3 / Azure Blob / GCS uploads with signed URLs
   http_app.py      streamable-HTTP app, auth middleware, OAuth resource metadata, /artifacts, /healthz
   config.py, logs.py, __main__.py
-tests/             69 tests: catalog, validation, rendering, label injection, review, Terraform, MCP tools,
+tests/             70 tests: catalog, validation, rendering, label injection, review, Terraform, MCP tools,
                    HTTP auth, OIDC (incl. attack tokens), RBAC, signed links, S3 (moto), Azure SAS, GCS V4
+docs/samples/      rendered sample diagrams shown above
+scripts/render_samples.py   regenerates docs/samples/
 ```
