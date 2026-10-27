@@ -5,6 +5,10 @@
 Kubernetes, on-prem and SaaS services such as PostgreSQL, Redis, Kafka and Nginx. Diagrams render
 through Graphviz to PNG, self-contained SVG, PDF or JPG.
 
+**Using it as a developer?** Start with the [developer guide](docs/USER_GUIDE.md). It covers connecting
+Claude Code, VS Code, Cursor or Claude Desktop, on your machine or to a shared team server, and gives
+example prompts. The rest of this README is for running and configuring the server.
+
 ## Samples
 
 These are the bundled templates and the Terraform example, rendered exactly as the server produces them.
@@ -107,7 +111,7 @@ Requires Python 3.11+ and Graphviz.
 winget install Graphviz.Graphviz        # Linux: apt install graphviz   macOS: brew install graphviz
 python -m venv .venv
 .venv\Scripts\python -m pip install -e ".[dev]"
-.venv\Scripts\python -m pytest            # 69 tests
+.venv\Scripts\python -m pytest            # 70 tests
 ```
 
 ### Register with Claude Code (stdio)
@@ -119,13 +123,13 @@ claude mcp add architecture-diagrams -s user `
 
 ### Run as a shared HTTP service
 ```bash
-docker build -t arch-diagram-mcp:1.1.0 .
+docker build -t arch-diagram-mcp:1.1.1 .
 docker run -d -p 8000:8000 -v diagrams:/data \
   -e ARCH_DIAGRAM_AUTH_TOKENS="ci=$(openssl rand -hex 32),platform-team=$(openssl rand -hex 32)" \
   -e ARCH_DIAGRAM_PUBLIC_BASE_URL=https://diagrams.internal.example.com \
   -e ARCH_DIAGRAM_URL_SIGNING_KEY=$(openssl rand -hex 32) \
   -e ARCH_DIAGRAM_ALLOWED_HOSTS="diagrams.internal.example.com:*" \
-  arch-diagram-mcp:1.1.0
+  arch-diagram-mcp:1.1.1
 ```
 Clients connect to `https://<host>/mcp` with `Authorization: Bearer <token>`. `GET /healthz` is
 unauthenticated and works as a probe. The server runs stateless, so it scales horizontally behind a
@@ -254,6 +258,7 @@ src/arch_diagram_mcp/
   config.py, logs.py, __main__.py
 tests/             70 tests: catalog, validation, rendering, label injection, review, Terraform, MCP tools,
                    HTTP auth, OIDC (incl. attack tokens), RBAC, signed links, S3 (moto), Azure SAS, GCS V4
+docs/USER_GUIDE.md      developer guide: connecting clients, example prompts, troubleshooting
 docs/CLOUD_TESTING.md   how the server was tested on real Google Cloud
 docs/samples/      rendered sample diagrams shown above
 scripts/render_samples.py   regenerates docs/samples/
